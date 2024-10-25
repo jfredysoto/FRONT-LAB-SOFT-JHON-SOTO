@@ -96,10 +96,11 @@ export class EditarPerfilComponent {
   submitForm() {
     if (this.editarPerfilForm.valid) {
       //console.log('Perfil actualizado', this.editarPerfilForm.value);
-      const id = 'id_del_usuario';
+      //const id = 'id_del_usuario';
+      const id = localStorage.getItem('userId');
       const profileData = this.editarPerfilForm.value;
 
-      this.authService.updateProfile(id, profileData).subscribe({
+      /*this.authService.updateProfile(id, profileData).subscribe({
         next: (response) => {
           console.log('Perfil actualizado', response);
           alert('Perfil actualizado correctamente');
@@ -109,7 +110,24 @@ export class EditarPerfilComponent {
           console.error('Error al actualizar el perfil', error);
           alert('Hubo un error al actualizar el perfil. Inténtalo de nuevo');
         }
-      });
+      });*/
+
+      if(id){
+        this.authService.updateProfile(id, profileData).subscribe({
+          next: (response) => {
+            console.log('Perfil actualizado', response);
+            alert('Perfil actualizado correctamente');
+            this.router.navigate(['/home']);
+          },
+          error: (error) => {
+            console.error('Error al actualizar el perfil', error);
+            alert('Hubo un error al actualizar el perfil. Inténtalo de nuevo');
+          }
+        });
+      } else {
+        console.error('No se encontró el ID del usuario.');
+        alert('No se encontró el ID del usuario. Intenta iniciar sesión nuevamente.');
+      }
     } else {
       console.log('Formulario inválido');
     }

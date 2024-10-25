@@ -15,11 +15,13 @@ export class HeaderComponent {
   showLoginMenu = false; // Controla la visibilidad del menú de login
   email: string = '';     // Guarda el email ingresado por el usuario
   password: string = '';  // Guarda la contraseña ingresada
+  userId: string = '';
   isLoggedIn: boolean = false; // Controla si el usuario está autenticado
 
   constructor(private authService: AuthService,private router: Router) {
     // Verificar si el usuario ya está logeado al cargar el componente
     const storedEmail = localStorage.getItem('userEmail');
+    const storedUserId = localStorage.getItem('userId');
     if (storedEmail){
       this.email = storedEmail;
       this.isLoggedIn = true;
@@ -32,10 +34,19 @@ export class HeaderComponent {
         if (response.exito){
           this.isLoggedIn = true;
           localStorage.setItem('userEmail', this.email);
+
+          if (response.userId) {
+            localStorage.setItem('userId', this.userId); // Guarda el ID del usuario
+          } else {
+            console.error('No se recibió el ID del usuario en la respuesta');
+          }
+
           if(response.userType){
             this.authService.setUserType(response.userType);
           }
+
           console.log(response.userType);
+          console.log(response.userId);
           alert('Inicio de sesión exitoso');
           this.toggleLoginMenu();
           this.router.navigate(['/header']); // Redirige al usuario después de iniciar sesión
@@ -67,7 +78,7 @@ export class HeaderComponent {
       userMenu.classList.toggle('active', this.showLoginMenu);
     }
   }
-  
+
 
   // Método para cerrar la sesión (opcional)
   logout() {
