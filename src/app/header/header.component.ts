@@ -28,6 +28,19 @@ export class HeaderComponent {
     }
   }
 
+  deleteAccount() {
+    this.authService.desactivarUsuario().subscribe(
+      response => {
+        console.log('Cuenta eliminada', response);
+        this.authService.logout();  // Cerrar sesión después de eliminar la cuenta
+        this.router.navigate(['/']); // Redirigir al usuario a la página principal
+      },
+      error => {
+        console.error('Error al eliminar cuenta', error);
+      }
+    );
+  }
+
   login() {
     this.authService.login(this.email, this.password).subscribe(
       (response) => {
