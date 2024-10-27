@@ -4,6 +4,9 @@
       <img src="../../assets/img/logo.png" class="h-32" alt="Logo AirFastColombia" />
       <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">AirFastColombia</span>
     </a>
+    <div *ngIf="accountDeletedMessage" class="account-deleted-message bg-green-200 text-green-800 p-3 rounded-md">
+      {{ accountDeletedMessage }}
+    </div>
     <div class="relative flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
       <!-- Mostrar el email del usuario si está autenticado -->
     <div *ngIf="isLoggedIn" class="user-info">
@@ -18,20 +21,20 @@
         <!-- Mostrar información del usuario y el botón de cerrar sesión si está logueado -->
         <div *ngIf="isLoggedIn; else loginTemplate" class="px-4 py-3 space-y-3">
           <div>
-            <p class="block text-sm font-medium text-white">Bienvenido,</p>
-            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ email }}</p>
+            <p style="color: white; font-size: 1rem; font-weight: bold;">Bienvenido,</p>
+            <p style="color: white; font-size: 0.9rem;">{{ email }}</p>
           </div>
-          <div>
-            <button (click)="logout()" class="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700">
-              Cerrar sesión
+          <div class="user-menu-buttons">
+            <button (click)="logout()" class="custom-button logout-button">
+              <i class="fa fa-sign-out"></i> Cerrar sesión
             </button>
-            <button (click)="deleteAccount()" class="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700">
-              Eliminar Cuenta
+            <button (click)="deleteAccount()" class="custom-button delete-button">
+              <i class="fa fa-trash"></i> Eliminar cuenta
             </button>
+            <a href="/editar-perfil" role="button" class="custom-button edit-profile-button">
+              <i class="fa fa-edit"></i> Editar perfil
+            </a>
           </div>
-          <div>
-            <a class="btn btn-green" href="/editar-perfil" role="button">Editar perfil</a>
-          </div>          
         </div>
         <!-- Formulario de login -->
         <ng-template #loginTemplate>

@@ -37,8 +37,9 @@ export class AuthService {
   }
 
   desactivarUsuario(): Observable<any> {
-    return this.http.post(`${this.desactivarUsuario}/desactivar-usuario`, {}); // Configura la URL y el método de tu API
+    return this.http.delete(`${this.apiUrl}/api/desactivar-usuario`, {}); // Ajusta la URL según el endpoint en tu backend
   }
+  
 
   // Establecer el tipo de usuario después del login
   setUserType(userType: number) {

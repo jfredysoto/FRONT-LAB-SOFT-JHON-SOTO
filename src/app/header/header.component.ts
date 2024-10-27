@@ -17,7 +17,7 @@ export class HeaderComponent {
   password: string = '';  // Guarda la contraseña ingresada
   userId: string = '';
   isLoggedIn: boolean = false; // Controla si el usuario está autenticado
-
+  accountDeletedMessage: string | null = null; // Declara la propiedad aquí
   constructor(private authService: AuthService,private router: Router) {
     // Verificar si el usuario ya está logeado al cargar el componente
     const storedEmail = localStorage.getItem('userEmail');
@@ -31,15 +31,21 @@ export class HeaderComponent {
   deleteAccount() {
     this.authService.desactivarUsuario().subscribe(
       response => {
-        console.log('Cuenta eliminada', response);
-        this.authService.logout();  // Cerrar sesión después de eliminar la cuenta
-        this.router.navigate(['/']); // Redirigir al usuario a la página principal
+        console.log('Cuenta eliminada exitosamente', response);
+        this.authService.logout();
+        this.accountDeletedMessage = 'Su cuenta ha sido eliminada exitosamente.';
+        setTimeout(() => {
+          this.accountDeletedMessage = null;
+          this.router.navigate(['/']); // Redirige a la página principal
+        }, 3000);
       },
       error => {
-        console.error('Error al eliminar cuenta', error);
+        console.error('Error al eliminar la cuenta', error);
+        this.accountDeletedMessage = `Ocurrió un error: ${error.message}. Inténtelo de nuevo.`;
       }
     );
   }
+  
 
   login() {
     this.authService.login(this.email, this.password).subscribe(

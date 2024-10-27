@@ -29,6 +29,60 @@ body {
   padding: 1rem; /* Añade algo de espacio interior */
 }
 
+.user-menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.custom-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  i {
+    margin-right: 8px;
+  }
+}
+
+.logout-button {
+  background-color: #ff5e5e;
+  color: white;
+
+  &:hover {
+    background-color: #e04b4b;
+  }
+}
+
+.delete-button {
+  background-color: #f44336; // rojo para advertencia
+  color: white;
+
+  &:hover {
+    background-color: #d32f2f;
+  }
+}
+
+.edit-profile-button {
+  background-color: #4caf50; // verde para editar perfil
+  color: white;
+  text-align: center;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #388e3c;
+  }
+}
+
+
+
 /* Mostrar el menú al hacer hover o focus en el botón */
 #user-menu-button:focus + #user-menu,
 #user-menu-button:hover + #user-menu {
