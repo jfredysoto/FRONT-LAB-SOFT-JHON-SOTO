@@ -1,0 +1,350 @@
+.flight-search-section {
+  margin-top: 150px;
+  padding: 50px; /* Reducido un poco para no ser tan grande */
+  background-color: #f1f5f9;/* Cambiado a blanco para un diseño más limpio */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Más suavidad en la sombra */
+  border-radius: 16px; /* Redondeado */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-10px); /* Efecto hover para que se eleve ligeramente */
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2); /* Sombra más fuerte en hover */
+  }
+}
+
+.search-container {
+  background: linear-gradient(180deg, #56b4d3, #c4e4ee);
+  padding: 10px;
+  position:static;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ /* Ajusta el ancho máximo que quieras */
+  margin: 0 auto; /* Para centrar el contenedor */
+  width: 100%; /* Esto asegura que se mantenga el tamaño adecuado en pantallas pequeñas */
+}
+
+.search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+
+  .trip-type label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 20px;
+    cursor: pointer;
+    font-size: 16px;
+
+    input {
+      margin-right: 10px;
+      transform: scale(1.2); /* Agrandar un poco los inputs */
+    }
+  }
+
+  .options .option-link {
+    background: #56b4d3; /* Un color azul más suave */
+    border-radius: 20px; /* Botones más redondeados */
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    
+    &:hover {
+      background: #1a73e8; /* Un tono más oscuro al hacer hover */
+      transform: translateY(-3px); /* Efecto de elevación en hover */
+    }
+  }
+}
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px; /* Más espacio entre los elementos */
+  
+  .form-group {
+    flex: 1;
+    min-width: 150px;
+    margin-bottom: 15px; /* Espacio entre los elementos */
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra interna suave */
+      transition: border-color 0.3s ease-in-out;
+
+      &:focus {
+        border-color: #56b4d3;
+      }
+    }
+
+    .search-btn {
+      width: 50%;
+      margin-top: 30px;
+      margin-left: 50px;
+      padding: 12px;
+      background-color: #000;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+
+      &:hover {
+        background-color: #333;
+      }
+    }
+  }
+}
+
+
+
+
+
+.external-links {
+  display: flex;
+  height: 400px; /* Establece la altura fija */
+  gap: 20px;
+  justify-content: right;
+
+  a {
+    font-size: 14px;
+    color: white;
+    text-decoration: none;
+    padding: 8px 20px;
+    border-radius: 10px;
+    background-color: #0056d2;
+    border: 1px solid transparent;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: width 0.4s ease;
+    z-index: -1;
+  }
+
+  a:hover::before {
+    width: 100%; /* Efecto de "luz" al pasar el mouse sobre el enlace */
+  }
+
+  a:hover {
+    background-color: white;
+    color: #0056d2;
+    border: 1px solid #0056d2;
+  }
+}
+.home-container {
+  background-color: #c2e3ff; /* Cambia este color al que desees */
+  min-height: 100vh; /* Esto asegura que el fondo cubra toda la pantalla */
+  padding: 20px; /* Opcional: para añadir un poco de espacio interno */
+}
+
+.promo-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  background-color: #fdffff;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 300px;
+}
+
+.promo-left {
+  background-image: url("https://cdn.pixabay.com/photo/2020/05/25/15/55/selfie-5219202_640.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-top-left-radius: 10px; /* Esquina superior izquierda redondeada */
+  border-bottom-left-radius: 10px; /* Esquina inferior izquierda redondeada */
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+
+  .promo-left-text {
+    text-align: center;
+    p {
+      font-size: 18px;
+    }
+
+    h1 {
+      font-size: 50px;
+      font-weight: bold;
+      margin: 0;
+    }
+  }
+}
+
+.promo-section {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.promo-card {
+  background: linear-gradient(90deg, #FF0046 0%, #A904AD 100%);
+  color: white;
+  border-top-right-radius: 10px; /* Esquina inferior izquierda redondeada */
+  border-bottom-right-radius: 10px;
+  padding: 20px;
+  max-width: 380px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.promo-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.2;
+  span {
+    font-size: 28px;
+    color: white;
+  }
+}
+
+h3 {
+  font-size: 32px;
+  margin: 10px 0;
+}
+
+button {
+  background-color: white;
+  color: #FF0046;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.promo-logo {
+  display: flex;
+  align-items: center;
+}
+
+.promo-logo img {
+  max-width: 50px;
+}
+
+
+
+
+/*sesion ofertas*/
+.offers-section {
+  margin: 40px 0;
+
+  h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  .offers-carousel {
+    display: flex;
+    justify-content: space-around;
+
+    .offer {
+      width: 30%;
+      text-align: center;
+      
+      img {
+        width: 100%;
+        border-radius: 12px;
+      }
+
+      .offer-details {
+        background-color: rgb(255, 255, 255);
+        padding: 10px;
+        border-radius: 12px;
+        margin-top: -30px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+
+        p:first-of-type {
+          font-weight: bold;
+          text-transform: capitalize;
+          color: white;
+        }
+
+        p:last-of-type {
+          font-size: 35px;
+          color: #333;
+        }
+      }
+    }
+  }
+  .more-offers-link {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #00A1E4;
+  }
+}
+.prepare-travel-section {
+  margin: 40px 0;
+
+  h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .preparation-options {
+    display: flex;
+    justify-content: space-around;
+
+    .option {
+      width: 30%;
+      text-align: center;
+      background-color: #F8F9FA;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+
+      img {
+        width: 50px;
+        margin-bottom: 10px;
+      }
+
+      p:first-of-type {
+        font-weight: bold;
+      }
+
+      p:last-of-type {
+        color: #666;
+        font-size: 14px;
+      }
+    }
+  }
+}

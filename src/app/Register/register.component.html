@@ -1,0 +1,119 @@
+<div class="register-container">
+  <h2>Crear cuenta</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group mb-4">
+      <label for="email" class="block text-gray-700 font-semibold mb-2">Correo electrónico</label>
+      <input
+        id="email"
+        type="email"
+        [(ngModel)]="email"
+        name="email"
+        placeholder="email@address.com"
+        required
+        (input)="validarEmail()"
+        class="border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+      />
+      <!-- Mensaje de error dinámico utilizando la misma lógica que en nombre -->
+      <div *ngIf="errorEmail" class="text-red-500 mt-1 text-sm">
+        {{ mensajeErrorEmail }} <!-- Mensaje de error dinámico -->
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="username">Usuario</label>
+      <input id="username" type="text" [(ngModel)]="username" name="username" placeholder="Cliente321" required />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" [(ngModel)]="password" name="password" placeholder="••••••••" required />
+    </div>
+
+    <div class="form-group">
+      <label for="documento">Documento</label>
+      <input id="documento" type="text" [(ngModel)]="documento" name="documento" placeholder="Documento de identidad" required />
+    </div>
+
+    <div class="form-group mb-4">
+      <label for="nombre" class="block text-gray-700 font-semibold mb-2">Nombre</label>
+      <input
+        id="nombre"
+        type="text"
+        [(ngModel)]="nombre"
+        name="nombre"
+        placeholder="Nombre"
+        required
+        (input)="validarNombre()"
+        class="border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+      />
+      <div *ngIf="errorNombre" class="text-red-500 mt-1 text-sm">
+        {{ mensajeError }} <!-- Mensaje de error dinámico -->
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="apellido">Apellido</label>
+      <input id="apellido" type="text" [(ngModel)]="apellido" name="apellido" placeholder="Apellido" required />
+    </div>
+
+    <div class="form-group">
+      <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+      <input id="fecha_nacimiento" type="date" [(ngModel)]="fecha_nacimiento" name="fecha_nacimiento" required />
+    </div>
+
+    <div class="form-group">
+      <label for="lugar_nacimiento">Lugar de Nacimiento</label>
+      <input id="lugar_nacimiento" type="text" [(ngModel)]="lugar_nacimiento" name="lugar_nacimiento" placeholder="Lugar de nacimiento" required #lugarInput (input)="searchLugarNacimiento(lugarInput.value)" />
+      <ul *ngIf="lugares.length > 0">
+        <li *ngFor="let lugar of lugares" (click)="onSelectLugarNacimiento(lugar)">{{ lugar.display_name }}</li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label for="direccion">Dirección</label>
+      <input id="direccion" type="text" [(ngModel)]="direccion" name="direccion" placeholder="Dirección" required />
+    </div>
+
+    <div class="form-group">
+      <label for="genero">Género</label>
+      <select id="genero" [(ngModel)]="genero" name="genero" required>
+        <option value="">Seleccionar</option>
+        <option value="1">Hombre</option>
+        <option value="2">Mujer</option>
+      </select>
+    </div>
+
+    <div class="form-group checkbox">
+      <input id="notis" type="checkbox" [(ngModel)]="notis" name="notis" />
+      <label for="notis">Acepto los terminos y Condiciones de tratamiento de datos</label>
+    </div>
+
+    <button type="submit" class="btn-register">Registrarse</button>
+  </form>
+  <p>Al crear una cuenta, aceptas las
+    <a href="/condiciones-servicio" (click)="openModal('condiciones')">Condiciones del servicio</a> y la
+    <a href="/politica-privacidad" (click)="openModal('privacidad')">Política de privacidad</a>.
+  </p>
+
+  <!-- Modal para mostrar contenido -->
+  <div class="modal" tabindex="-1" id="modalDocument">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ modalTitle }}</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <ng-container *ngIf="modalContent === 'condiciones'">
+            <app-condiciones-servicio></app-condiciones-servicio>
+          </ng-container>
+          <ng-container *ngIf="modalContent === 'privacidad'">
+            <app-politica-privacidad></app-politica-privacidad>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,75 @@
+.register-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 160px auto 0; /* Agregar un margen superior para evitar que se superponga con el header */
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+  }
+
+  .checkbox {
+    display: flex;
+    align-items: center;
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+
+    label {
+      font-size: 1rem;
+    }
+  }
+
+  .btn-register {
+    width: 100%;
+    padding: 15px;
+    background-color: #0072ff;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  p {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 20px;
+  }
+
+  a {
+    color: #0072ff;
+    text-decoration: none;
+  }
+}
+

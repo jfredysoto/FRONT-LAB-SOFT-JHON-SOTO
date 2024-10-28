@@ -1,0 +1,68 @@
+<div *ngIf="showModal" class="modal-container">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Cambiar Contraseña</h2>
+        <button class="close-btn" (click)="cerrarModal()">✕</button>
+      </div>
+  
+      <form [formGroup]="cambiarContrasenaForm" (ngSubmit)="cambiarContrasena()">
+        <!-- Contraseña actual -->
+        <div class="form-group">
+          <label for="contrasenaActual">Contraseña actual</label>
+          <div class="input-container">
+            <input
+              id="contrasenaActual"
+              [type]="passwordVisible.contrasenaActual ? 'text' : 'password'"
+              formControlName="contrasenaActual"
+              placeholder="Contraseña actual"
+              required
+            />
+            <i class="icon-eye" (click)="togglePasswordVisibility('contrasenaActual')">
+              {{ passwordVisible.contrasenaActual ? '👁️' : '👁️‍🗨️ ' }}
+            </i>
+          </div>
+        </div>
+  
+        <!-- Nueva contraseña -->
+        <div class="form-group">
+          <label for="nuevaContrasena">Contraseña nueva</label>
+          <div class="input-container">
+            <input
+              id="nuevaContrasena"
+              [type]="passwordVisible.nuevaContrasena ? 'text' : 'password'"
+              formControlName="nuevaContrasena"
+              placeholder="Contraseña nueva"
+              required
+            />
+            <i class="icon-eye" (click)="togglePasswordVisibility('nuevaContrasena')">
+              {{ passwordVisible.nuevaContrasena ? '👁️' : '👁️‍🗨️' }}
+            </i>
+          </div>
+        </div>
+  
+        <!-- Confirmar contraseña -->
+        <div class="form-group">
+          <label for="confirmarContrasena">Confirmar contraseña</label>
+          <div class="input-container">
+            <input
+              id="confirmarContrasena"
+              [type]="passwordVisible.confirmarContrasena ? 'text' : 'password'"
+              formControlName="confirmarContrasena"
+              placeholder="Confirmar contraseña"
+              required
+            />
+            <i class="icon-eye" (click)="togglePasswordVisibility('confirmarContrasena')">
+              {{ passwordVisible.confirmarContrasena ? '👁️' : '👁️‍🗨️' }}
+            </i>
+          </div>
+        </div>
+  
+        <a href="#" class="forgot-link">¿Olvidó su contraseña? Restablézcala <span>Aquí</span></a>
+  
+        <button type="submit" class="btn-confirm" [disabled]="cambiarContrasenaForm.invalid">Confirmar</button>
+      </form>
+    </div>
+  </div>
+  
+  
+  

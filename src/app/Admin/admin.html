@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+</head>
+<body>
+    <h1>Administración de  Vuelos</h1>   
+
+    <!-- Formulario para Programar Vuelo -->
+    <div id="create-flight-form" style="display: none;">
+        <h2>Programar Vuelo</h2>
+        <label>Origen: <input type="text" id="origin"></label><br>
+        <label>Destino: <input type="text" id="destination"></label><br>
+        <label>Fecha: <input type="date" id="date"></label><br>
+        <label>Hora: <input type="time" id="time"></label><br>
+        <label>Duración (min): <input type="number" id="duration"></label><br>
+        <label>Costo: <input type="number" id="cost"></label><br>
+        <button onclick="createFlight()">Programar Vuelo</button>
+        <button onclick="hideCreateFlightForm()">Cancelar</button>
+    </div>
+
+    <!-- Tabla de Vuelos -->
+    <h2>Lista de Vuelos</h2>
+    <button onclick="showCreateFlightForm()">Programar Nuevo Vuelo</button>
+    <table id="flightTable" border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Duración</th>
+                <th>Costo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Vuelos cargados dinámicamente -->
+        </tbody>
+    </table>
+
+    <script src="admin.js"></script>
+</body>
+</html>

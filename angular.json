@@ -30,7 +30,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+
             ],
             "scripts": [
               "node_modules/flowbite/dist/flowbite.min.js"
@@ -92,12 +94,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+            "src/styles.css"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "2c510b2c-c97e-4e7d-abe7-fa55656dab8e"
   }
 }
