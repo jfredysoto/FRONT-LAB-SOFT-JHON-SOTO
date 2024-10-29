@@ -38,10 +38,13 @@ export class AuthService {
 
    // Método para desactivar usuario, enviando el tipo de usuario al backend
    desactivarUsuario(userId: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/api/desactivar-usuario?id=${userId}`, {});
+    const url = `http://localhost:5113/api/desactivar-usuario?id=${userId}`;
+    //return this.http.patch(`${this.apiUrl}/api/desactivar-usuario?id=${userId}`, {});
+    console.log("aqui estoy");
+    return this.http.patch(url, {});
   }
-  
-  
+
+
 
   // Establecer el tipo de usuario después del login
   setUserType(userType: number) {

@@ -18,45 +18,51 @@ export class HeaderComponent {
   userId: string = '';
   isLoggedIn: boolean = false; // Controla si el usuario está autenticado
   accountDeletedMessage: string | null = null; // Declara la propiedad aquí
+
+
   constructor(private authService: AuthService,private router: Router) {
     // Verificar si el usuario ya está logeado al cargar el componente
     const storedEmail = localStorage.getItem('userEmail');
     const storedUserId = localStorage.getItem('userId');
-    if (storedEmail){
+    if (storedEmail && storedUserId){
       this.email = storedEmail;
+      this.userId = storedUserId;
       this.isLoggedIn = true;
     }
   }
 
   deleteAccount() {
-  const userId = this.getUserId(); // Obtén el ID del usuario
+  //const userId = this.getUserId(); // Obtén el ID del usuario
+  const userId = localStorage.getItem('userId');
   console.log("ID del usuario:", userId); // Verifica que el ID se está enviando correctamente
+
+  if(!userId){
+    console.error('Error: No se encontró el ID del usuario en el localStorage');
+    this.accountDeletedMessage = 'No se pudo obtener el ID del usuario.';
+    return;
+  }
 
   this.authService.desactivarUsuario(userId).subscribe(
     response => {
       console.log('Cuenta eliminada exitosamente', response);
       this.authService.logout();
+
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userEmail');
+
       this.accountDeletedMessage = 'Su cuenta ha sido eliminada exitosamente.';
+
       setTimeout(() => {
         this.accountDeletedMessage = null;
         this.router.navigate(['/']); // Redirige a la página principal
-      }, 3000);
-    },
+        }, 3000);
+      },
     error => {
       console.error('Error al eliminar la cuenta', error);
       this.accountDeletedMessage = 'Ocurrió un error al intentar eliminar la cuenta. Inténtelo de nuevo.';
-    }
-  );
-}
-
-  
-  getUserId(): string {
-    // Implementa la lógica para obtener el ID del usuario
-    return 'user-id-ejemplo'; // Reemplaza con la lógica real
+      }
+    );
   }
-  
-  
-  
 
   login() {
     this.authService.login(this.email, this.password).subscribe(
@@ -66,7 +72,8 @@ export class HeaderComponent {
           localStorage.setItem('userEmail', this.email);
 
           if (response.userId) {
-            localStorage.setItem('userId', this.userId); // Guarda el ID del usuario
+            localStorage.setItem('userId', response.userId);
+            this.userId = response.userId; // Guarda el ID del usuario
           } else {
             console.error('No se recibió el ID del usuario en la respuesta');
           }
@@ -115,8 +122,10 @@ export class HeaderComponent {
     this.isLoggedIn = false;
     this.email = '';
     this.password = '';
+    this.userId = '';
     // Elimina la sesion guardada
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('userId');
     //redirige a inicio
     this.router.navigate(['/home']);
   }
