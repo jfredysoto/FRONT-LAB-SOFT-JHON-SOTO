@@ -27,6 +27,7 @@ export class AuthService {
     )
   }
 
+
   register(user: any): Observable<any> {
     return this.http.post(this.apiUrlRegister, user);
   }
