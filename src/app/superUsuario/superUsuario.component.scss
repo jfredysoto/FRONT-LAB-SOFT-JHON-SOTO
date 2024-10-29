@@ -1,0 +1,162 @@
+// Variables de colores para usar en el diseño del panel de root
+$primary-color: #0053a0;
+$secondary-color: #f0f4f8;
+$accent-color: #ff7f50;
+$text-color: #333;
+$background-color: #ffffff;
+$border-color: #e0e0e0;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Estilos generales de la página
+.root-dashboard {
+  font-family: Arial, sans-serif;
+  background-color: $secondary-color;
+  padding: 2rem;
+  
+  .header {
+    background-color: $primary-color;
+    color: $background-color;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  // Estilos para las tarjetas de cada sección (Usuarios, Vuelos, Configuración)
+  .section {
+    background-color: $background-color;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      font-size: 1.25rem;
+      color: $primary-color;
+      margin-bottom: 1rem;
+    }
+
+    .section-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  }
+
+  // Estilos para la lista de usuarios y vuelos
+  .data-list {
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    background-color: $background-color;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+
+      th,
+      td {
+        padding: 0.75rem;
+        border-bottom: 1px solid $border-color;
+        color: $text-color;
+      }
+
+      th {
+        background-color: $secondary-color;
+        font-weight: bold;
+      }
+    }
+  }
+
+  // Botones de acción
+  .action-btn {
+    background-color: $accent-color;
+    color: $background-color;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken($accent-color, 10%);
+    }
+
+    &.delete {
+      background-color: #e74c3c;
+
+      &:hover {
+        background-color: darken(#e74c3c, 10%);
+      }
+    }
+  }
+
+  // Estilos para la sección de configuración del sistema
+  .config-section {
+    .config-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+
+      label {
+        font-weight: bold;
+        color: $text-color;
+      }
+
+      input[type="text"],
+      select {
+        padding: 0.5rem;
+        border: 1px solid $border-color;
+        border-radius: 4px;
+        width: 70%;
+      }
+    }
+
+    .save-btn {
+      background-color: $primary-color;
+      color: $background-color;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  }
+
+  
+  // Responsividad
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .section-content {
+      flex-direction: column;
+    }
+
+    .header {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+}
