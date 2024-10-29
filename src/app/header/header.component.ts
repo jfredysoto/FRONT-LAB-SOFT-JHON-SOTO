@@ -29,22 +29,33 @@ export class HeaderComponent {
   }
 
   deleteAccount() {
-    this.authService.desactivarUsuario().subscribe(
-      response => {
-        console.log('Cuenta eliminada exitosamente', response);
-        this.authService.logout();
-        this.accountDeletedMessage = 'Su cuenta ha sido eliminada exitosamente.';
-        setTimeout(() => {
-          this.accountDeletedMessage = null;
-          this.router.navigate(['/']); // Redirige a la página principal
-        }, 3000);
-      },
-      error => {
-        console.error('Error al eliminar la cuenta', error);
-        this.accountDeletedMessage = `Ocurrió un error: ${error.message}. Inténtelo de nuevo.`;
-      }
-    );
+  const userId = this.getUserId(); // Obtén el ID del usuario
+  console.log("ID del usuario:", userId); // Verifica que el ID se está enviando correctamente
+
+  this.authService.desactivarUsuario(userId).subscribe(
+    response => {
+      console.log('Cuenta eliminada exitosamente', response);
+      this.authService.logout();
+      this.accountDeletedMessage = 'Su cuenta ha sido eliminada exitosamente.';
+      setTimeout(() => {
+        this.accountDeletedMessage = null;
+        this.router.navigate(['/']); // Redirige a la página principal
+      }, 3000);
+    },
+    error => {
+      console.error('Error al eliminar la cuenta', error);
+      this.accountDeletedMessage = 'Ocurrió un error al intentar eliminar la cuenta. Inténtelo de nuevo.';
+    }
+  );
+}
+
+  
+  getUserId(): string {
+    // Implementa la lógica para obtener el ID del usuario
+    return 'user-id-ejemplo'; // Reemplaza con la lógica real
   }
+  
+  
   
 
   login() {
