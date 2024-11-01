@@ -35,6 +35,10 @@
               <i class="fa fa-edit"></i> Editar perfil
             </a>
           </div>
+              <!-- Opciones de SuperUsuario -->
+              <div *ngIf="isLoggedIn && isRoot" class="super-usuario-menu">
+                <a href="/super-usuario" class="custom-button">Panel de SuperUsuario</a>
+              </div>
         </div>
         <!-- Formulario de login -->
         <ng-template #loginTemplate>

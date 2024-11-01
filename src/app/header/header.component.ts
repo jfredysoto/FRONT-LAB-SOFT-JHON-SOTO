@@ -1,42 +1,62 @@
 import { AuthService } from './../services/auth.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Importa CommonModule
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   showLoginMenu = false; // Controla la visibilidad del menú de login
   email: string = '';     // Guarda el email ingresado por el usuario
   password: string = '';  // Guarda la contraseña ingresada
   userId: string = '';
   isLoggedIn: boolean = false; // Controla si el usuario está autenticado
-  accountDeletedMessage: string | null = null; // Declara la propiedad aquí
-  constructor(private authService: AuthService,private router: Router) {
-    // Verificar si el usuario ya está logeado al cargar el componente
+  accountDeletedMessage: string | null = null;
+  isRoot: boolean = false; // Verifica si el usuario es SuperUsuario (Root)
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
     const storedEmail = localStorage.getItem('userEmail');
     const storedUserId = localStorage.getItem('userId');
-    if (storedEmail){
+
+    if (storedEmail && storedUserId) {
       this.email = storedEmail;
+      this.userId = storedUserId;
       this.isLoggedIn = true;
+      this.isRoot = this.authService.isRoot(); // Verifica si es SuperUsuario
     }
   }
 
-    deleteAccount() {
-    const userId = this.getUserId(); // Obtén el ID del usuario
-    console.log("ID del usuario:", userId); // Verifica que el ID se está enviando correctamente
+  getUserId(): string {
+    return localStorage.getItem('userId') || '';
+  }
+
+  deleteAccount(): void {
+    const userId = this.getUserId();
+    console.log("ID del usuario:", userId);
+
+    if (!userId) {
+      console.error('Error: No se encontró el ID del usuario en el localStorage');
+      this.accountDeletedMessage = 'No se pudo obtener el ID del usuario.';
+      return;
+    }
 
     this.authService.desactivarUsuario(userId).subscribe(
       response => {
         console.log('Cuenta eliminada exitosamente', response);
         this.authService.logout();
+
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userEmail');
+
         this.accountDeletedMessage = 'Su cuenta ha sido eliminada exitosamente.';
+
         setTimeout(() => {
           this.accountDeletedMessage = null;
           this.router.navigate(['/']); // Redirige a la página principal
@@ -49,37 +69,28 @@ export class HeaderComponent {
     );
   }
 
-    
-    getUserId(): string {
-      // Implementa la lógica para obtener el ID del usuario
-      return 'user-id-ejemplo'; // Reemplaza con la lógica real
-    }
-  
-  
-  
-
-  login() {
+  login(): void {
     this.authService.login(this.email, this.password).subscribe(
       (response) => {
-        if (response.exito){
+        if (response.exito) {
           this.isLoggedIn = true;
           localStorage.setItem('userEmail', this.email);
 
           if (response.userId) {
-            localStorage.setItem('userId', this.userId); // Guarda el ID del usuario
+            localStorage.setItem('userId', response.userId);
+            this.userId = response.userId;
           } else {
             console.error('No se recibió el ID del usuario en la respuesta');
           }
 
-          if(response.userType){
+          if (response.userType) {
             this.authService.setUserType(response.userType);
+            this.isRoot = this.authService.isRoot(); // Verifica si es SuperUsuario
           }
 
-          console.log(response.userType);
-          console.log(response.userId);
           alert('Inicio de sesión exitoso');
           this.toggleLoginMenu();
-          this.router.navigate(['/header']); // Redirige al usuario después de iniciar sesión
+          this.router.navigate(['/header']);
         } else {
           alert('Credenciales incorrectas');
         }
@@ -89,19 +100,9 @@ export class HeaderComponent {
         alert('Ocurrió un error al iniciar sesión');
       }
     );
-
-    /*if (this.email === 'usuario@example.com' && this.password === '123456') {
-      this.isLoggedIn = true; // El usuario está logueado
-      this.router.navigate(['/header']);
-      alert('Credenciales correctas');
-      this.toggleLoginMenu();
-    } else {
-      alert('Credenciales incorrectas. Por favor, intente de nuevo.');
-    }*/
-
   }
 
-  toggleLoginMenu() {
+  toggleLoginMenu(): void {
     this.showLoginMenu = !this.showLoginMenu;
     const userMenu = document.getElementById('user-menu');
     if (userMenu) {
@@ -109,20 +110,21 @@ export class HeaderComponent {
     }
   }
 
-
-  // Método para cerrar la sesión (opcional)
-  logout() {
+  logout(): void {
     this.isLoggedIn = false;
     this.email = '';
     this.password = '';
-    // Elimina la sesion guardada
+    this.userId = '';
+    this.isRoot = false;
+
     localStorage.removeItem('userEmail');
-    //redirige a inicio
+    localStorage.removeItem('userId');
     this.router.navigate(['/home']);
   }
 
-  editarPerfil(){
+  editarPerfil(): void {
     console.log('Editar perfil');
   }
 }
+
 

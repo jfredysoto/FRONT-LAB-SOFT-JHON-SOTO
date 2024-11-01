@@ -1,62 +1,78 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiURL = 'http://localhost:5113/api/login'; // Cambia esto por tu URL del API
-  private apiUrlRegister = 'http://localhost:5113/api/registro';
-  private apiUrlUpdateProfile = 'http://localhost:5113/api/editar-perfil';
-  private apiUrl = 'http://localhost:5113/api/desactivar-usuario'; // Define la URL base de tu API
+  private apiURL = 'http://localhost:5113/api'; // URL base de tu API
   private userType: number | null = null;
+  private rolUsuario: string | null = null;
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
+
+  // Método getter para obtener el valor actual de autenticación
+  get isLoggedIn(): boolean {
+    return this.isLoggedInSubject.value;
+  }
 
   // Método para hacer login
   login(email: string, contrasena: string): Observable<any> {
     const body = { Correo: email, Contrasena: contrasena };
-    return this.http.post<any>(this.apiURL, body).pipe(
+    return this.http.post<any>(`${this.apiURL}/login`, body).pipe(
       tap(response => {
-        if (response && response.id){
+        if (response && response.id) {
           localStorage.setItem('userId', response.id);
+          this.isLoggedInSubject.next(true);
+          this.setUserType(response.userType);
+          this.rolUsuario = response.role;
+          localStorage.setItem('userRole', response.role);
         }
       })
-    )
+    );
   }
 
-
+  // Método para registrarse
   register(user: any): Observable<any> {
-    return this.http.post(this.apiUrlRegister, user);
+    return this.http.post(`${this.apiURL}/registro`, user);
   }
 
+  // Método para actualizar perfil
   updateProfile(id: string, profileData: any): Observable<any> {
-    const url = `http://localhost:5113/api/editar-perfil?id=${id}`;
-    return this.http.patch(url, profileData);
+    return this.http.patch(`${this.apiURL}/editar-perfil?id=${id}`, profileData);
   }
 
-   // Método para desactivar usuario, enviando el tipo de usuario al backend
-   desactivarUsuario(userId: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/api/desactivar-usuario?id=${userId}`, {});
+  // Método para desactivar usuario, enviando el tipo de usuario al backend
+  desactivarUsuario(userId: string): Observable<any> {
+    const url = `${this.apiURL}/desactivar-usuario?id=${userId}`;
+    return this.http.patch(url, {});
   }
-  
-  
 
-  // Establecer el tipo de usuario después del login
-  setUserType(userType: number) {
+  // Método para cerrar sesión y limpiar datos
+  logout(): void {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userType');
+    this.isLoggedInSubject.next(false);
+    this.userType = null;
+    this.rolUsuario = null;
+  }
+
+  // Métodos de rol y tipo de usuario
+  setUserType(userType: number): void {
     this.userType = userType;
     localStorage.setItem('userType', userType.toString());
   }
 
-  // Obtener el tipo de usuario
   getUserType(): number | null {
     const storedUserType = localStorage.getItem('userType');
     return storedUserType ? parseInt(storedUserType, 10) : null;
   }
 
-  // Verificar roles
   isRoot(): boolean {
     return this.getUserType() === 1;
   }
@@ -69,9 +85,33 @@ export class AuthService {
     return this.getUserType() === 3;
   }
 
-  // Método para limpiar datos de usuario
-  logout() {
-    localStorage.removeItem('userType');
-    this.userType = null;
+  getUserRole(): string | null {
+    if (!this.rolUsuario) {
+      this.rolUsuario = localStorage.getItem('userRole');
+    }
+    return this.rolUsuario;
+  }
+  
+
+  // Método para obtener todos los administradores
+  getAdministradores(): Observable<any[]> {
+    // Asegúrate de que el backend esté enviando el Content-Type como application/json
+    return this.http.get<any[]>(`${this.apiURL}/usuarios/obtener-todos`);
+  }
+
+  // auth.service.ts
+crearAdministrador(datosAdmin: any): Observable<any> {
+  return this.http.post(`${this.apiURL}/Usuarios`, datosAdmin);
+}
+
+
+  eliminarAdministrador(adminId: number): Observable<any> {
+    return this.http.delete(`${this.apiURL}/administradores/${adminId}`);
+  }
+
+  modificarAdministrador(adminId: number, datosActualizados: any): Observable<any> {
+    return this.http.patch(`${this.apiURL}/editar-perfil/${adminId}`, datosActualizados);
   }
 }
+
+

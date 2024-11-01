@@ -31,6 +31,8 @@ export class RegisterComponent {
   modalTitle: string = '';
   modalContent: string = '';
 
+  
+
   constructor(private authService: AuthService, private router: Router) {}
 
   // Método para abrir el modal

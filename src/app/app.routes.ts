@@ -4,7 +4,9 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './Home/home.component';
 import { RegisterComponent } from './Register/register.component';
 import { CambiarContrasenaComponent } from './CambiarContraseña/cambiar-contraseña.component';
-
+import { SuperUsuarioComponent } from './superUsuario/superUsuario.component';
+import { AutenticacionGuard} from './protecciones/autenticacion.guard';
+import { RolGuard } from './protecciones/rol.guard';
 export const routes: Routes = [
   {
     path: 'header', // Ruta principal (raíz)
@@ -27,8 +29,15 @@ export const routes: Routes = [
       loadComponent: () => import('./condiciones-servicio/condiciones-servicio.component').then(m => m.CondicionesServicioComponent), // Importa el componente de manera dinámica
   },
   {
+    path: 'super-usuario', // Ruta del componente
+    component: SuperUsuarioComponent, // Componente standalone
+    canActivate: [AutenticacionGuard, RolGuard],
+    data: { rolEsperado: 'Root' } // Solo accesible para usuarios con rol Root 
+  },
+  {
     path: 'cambiar-contrasena', // Ruta del componente
-    component: CambiarContrasenaComponent // Componente standalone
+    component: CambiarContrasenaComponent, // Componente standalone
+    canActivate: [AutenticacionGuard] // Protegido por autenticación
   },
   {
   path: 'politica-privacidad',
