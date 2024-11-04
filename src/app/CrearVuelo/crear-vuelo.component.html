@@ -10,18 +10,52 @@
 
     <!-- Campo Tipo de Vuelo -->
     <div>
-      <label for="tipoVuelo" class="block text-gray-700 font-medium mb-2">Tipo de vuelo</label>
-      <select formControlName="tipoVuelo" id="tipoVuelo" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        <option value="">Seleccione</option>
-        <option value="Nacional">Nacional</option>
-        <option value="Internacional">Internacional</option>
+      <label for="tipoVuelo" class="block text-gray-700 font-medium mb-2">Tipo de Vuelo</label>
+      <select id="tipoVuelo" formControlName="tipoVuelo" (change)="onTipoVueloChange()"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+        <option value="">Seleccione tipo de vuelo</option>
+        <option value="nacional">Nacional</option>
+        <option value="internacional">Internacional</option>
       </select>
     </div>
 
-    <!-- Campo Fecha del Vuelo -->
+    <!-- Origen -->
     <div>
-      <label for="fechaVuelo" class="block text-gray-700 font-medium mb-2">Fecha del vuelo</label>
-      <input type="date" formControlName="fechaVuelo" id="fechaVuelo" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+      <label for="origen" class="block text-gray-700 font-medium mb-2">Origen</label>
+      <select id="origen" formControlName="origen" (change)="onOrigenChange()" class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+          <option *ngFor="let ciudad of ciudadesOrigen" [value]="ciudad">{{ ciudad }}</option>
+      </select>
+    </div>
+
+    <!-- Destino -->
+    <div>
+      <label for="destino" class="block text-gray-700 font-medium mb-2">Destino</label>
+      <select id="destino" formControlName="destino" class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+          <option *ngFor="let ciudad of ciudadesDestino" [value]="ciudad">{{ ciudad }}</option>
+      </select>
+    </div>
+
+    <!-- Tiempo Estimado de Vuelo -->
+    <div>
+      <label for="tiempoEstimado" class="block text-gray-700 font-medium mb-2">Tiempo Estimado de Vuelo</label>
+      <input
+          id="tiempoEstimado"
+          type="text"
+          formControlName="tiempoEstimado"
+          [value]="tiempoEstimado || 'N/A'"
+          [disabled]="true"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+    </div>
+
+    <!-- Fecha de Vuelo -->
+    <div>
+      <label for="fechaVuelo" class="block text-gray-700 font-medium mb-2">Fecha de Vuelo</label>
+      <input
+          id="fechaVuelo"
+          type="date"
+          formControlName="fechaVuelo"
+          [min]="todayDate"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700">
     </div>
 
     <!-- Campo Hora del Vuelo -->
@@ -30,17 +64,7 @@
       <input type="time" formControlName="horaVuelo" id="horaVuelo" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
     </div>
 
-    <!-- Campo Origen -->
-    <div>
-      <label for="origen" class="block text-gray-700 font-medium mb-2">Origen</label>
-      <input type="text" formControlName="origen" id="origen" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-    </div>
 
-    <!-- Campo Destino -->
-    <div>
-      <label for="destino" class="block text-gray-700 font-medium mb-2">Destino</label>
-      <input type="text" formControlName="destino" id="destino" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-    </div>
 
     <!-- Botón de Confirmación -->
     <button type="submit" [disabled]="!vueloForm.valid" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500">
