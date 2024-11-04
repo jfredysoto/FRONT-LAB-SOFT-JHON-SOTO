@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-
+import { CrearVueloComponent } from './CrearVuelo/crear-vuelo.component';
 import { AppComponent } from './app.component';
-import { RegisterComponent } from './register/register.component';
 import { CondicionesServicioComponent } from './condiciones-servicio/condiciones-servicio.component';
 import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 
 @NgModule({
   declarations: [
+    CrearVueloComponent,
     AppComponent,
     RegisterComponent,
     CondicionesServicioComponent, // Declarar CondicionesServicioComponent

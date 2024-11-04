@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { VuelosService } from '../services/vuelos/vuelos.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-crear-vuelo',
   templateUrl: './crear-vuelo.component.html',
   styleUrls: ['./crear-vuelo.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, FormsModule]
 })
 export class CrearVueloComponent implements OnInit{
   vueloForm: FormGroup;
@@ -19,20 +20,27 @@ export class CrearVueloComponent implements OnInit{
   ciudadesOrigen: string[] = [];
   ciudadesDestino: string[] = [];
   todayDate: string;
-
+  fechaLlegada: string = ''; // Fecha calculada de llegada
+  tiempoEstimadoVuelo: number = 0; // En horas, calculado según origen y destino
+  costoVuelo: number | null = null;
   // Diccionario con tiempos estimados de vuelo en horas
   tiempoDeVueloEstimado: { [key: string]: number } = {
     // Vuelos Nacionales
+    'Bogotá-Barranquilla': 1.5,
     'Bogotá-Cali': 1.5,
     'Bogotá-Cartagena': 1.25,
     'Bogotá-Medellín': 1,
     'Bogotá-Pereira': 1,
+    'Cali-Barranquilla': 1.5,
     'Cali-Cartagena': 1.5,
     'Cali-Medellín': 1,
     'Cali-Pereira': 0.75,
+    'Cartagena-Barranquilla': 3,
     'Cartagena-Medellín': 1.5,
     'Cartagena-Pereira': 1.75,
     'Medellín-Pereira': 0.5,
+    'Medellín-Barranquilla': 1.25,
+    'Pereira-Barranquilla': 3,
 
     // Vuelos Internacionales
     'Bogotá-Buenos Aires': 6.5,
@@ -60,6 +68,33 @@ export class CrearVueloComponent implements OnInit{
     'Pereira-New York': 6,
   };
 
+  zonaHorariaDestinos: { [key: string]: number } = {
+    'Barranquilla': -5,
+    'Bogotá': -5,
+    'Cali': -5,
+    'Medellín': -5,
+    'Cartagena': -5,
+    'Pereira': -5,
+    'Madrid': 1,
+    'Buenos Aires': -3,
+    'Londres': 0,
+    'Miami': -5,
+    'New York': -5
+    // Agregar más destinos según sea necesario
+  };
+
+  costoVueloPorDestino: { [key: string]: number } = {
+    'Bogotá': 200, // Costo base en la moneda local
+    'Cali': 150,
+    'Medellín': 180,
+    'Cartagena': 220,
+    'Madrid': 800,
+    'Buenos Aires': 700,
+    'Londres': 900,
+    'Miami': 600,
+    'New York': 750,
+  };
+
 
   constructor(private fb: FormBuilder, private vuelosService: VuelosService) {
 
@@ -69,15 +104,28 @@ export class CrearVueloComponent implements OnInit{
       destino: ['', Validators.required],
       fechaVuelo: ['', Validators.required],
       horaVuelo: ['', Validators.required],
-      tiempoEstimado: [{ value: '', disabled: true }]
+      tiempoEstimado: [{ value: '', disabled: true }],
+      costoVuelo: [this.costoVuelo, [Validators.required, Validators.min(1)]], // Campo de costo
     });
     this.todayDate = this.getTodayDate();
   }
 
   ngOnInit(): void {
     this.obtenerProximoIdVuelo();
+    // Suscripciones existentes
     this.vueloForm.get('origen')?.valueChanges.subscribe(() => this.calcularTiempoEstimado());
     this.vueloForm.get('destino')?.valueChanges.subscribe(() => this.calcularTiempoEstimado());
+    this.vueloForm.get('fechaVuelo')?.valueChanges.subscribe(() => this.calcularFechaLlegada());
+    this.vueloForm.get('horaVuelo')?.valueChanges.subscribe(() => this.calcularFechaLlegada());
+    this.vueloForm.get('destino')?.valueChanges.subscribe(() => this.calcularCostoVuelo());
+  }
+
+  calcularCostoVuelo(): void {
+    const destino = this.vueloForm.get('destino')?.value;
+    if (destino){
+      this.costoVuelo = this.costoVueloPorDestino[destino] || 0; // Obtiene el costo basado en el destino
+      this.vueloForm.get('costoVuelo')?.setValue(this.costoVuelo); // Actualiza el campo del costo
+    }
   }
 
   calcularTiempoEstimado(): void {
@@ -85,14 +133,58 @@ export class CrearVueloComponent implements OnInit{
     const destino = this.vueloForm.get('destino')?.value;
 
     if (origen && destino && origen !== destino){
-      const key = [origen, destino].sort().join('-');
-      //const key = `${origen}-${destino}`;
-      const tiempo = this.tiempoDeVueloEstimado[key];
+      const keyDirecto = `${origen}-${destino}`;
+      const keyInverso = `${destino}-${origen}`;
 
-      this.tiempoEstimado = tiempo ? `${tiempo} hrs` : 'Tiempo no disponible';
+      // Busca en ambas direcciones (origen-destino y destino-origen)
+      this.tiempoEstimadoVuelo = this.tiempoDeVueloEstimado[keyDirecto] || this.tiempoDeVueloEstimado[keyInverso] || 0;
+      this.tiempoEstimado = this.tiempoEstimadoVuelo ? `${this.tiempoEstimadoVuelo} hrs` : 'Tiempo no disponible';
+
+      // Actualiza la fecha de llegada
+      this.calcularFechaLlegada();
+
     } else {
       this.tiempoEstimado = 'N/A';
     }
+  }
+
+  calcularFechaLlegada(): void{
+    const fechaVuelo = this.vueloForm.get('fechaVuelo')?.value;
+    const horaVuelo = this.vueloForm.get('horaVuelo')?.value;
+    const destino = this.vueloForm.get('destino')?.value;
+
+    if (fechaVuelo && horaVuelo && this.tiempoDeVueloEstimado && destino){
+
+      const fechaSalida = new Date(`${fechaVuelo}T${horaVuelo}`);
+
+      const offsetOrigen = -5; // UTC-5 para Colombia
+      fechaSalida.setHours(fechaSalida.getHours());
+
+      const tiempoEstimadoMs = this.tiempoEstimadoVuelo * 60 * 60 * 1000; // Convertir horas a milisegundos
+      console.log(tiempoEstimadoMs);
+
+      const test = fechaSalida.getTime();
+      console.log(fechaSalida);
+
+      // Calcula la fecha de llegada sumando el tiempo estimado a la fecha y hora de salida
+      const fechaLlegadaObj = new Date(fechaSalida.getTime() + tiempoEstimadoMs);
+
+      // Ajustar la hora de llegada según la zona horaria del destino
+      const offsetDestino = this.zonaHorariaDestinos[destino] || 0; // Usar 0 si el destino no está en el diccionario
+      fechaLlegadaObj.setHours(fechaLlegadaObj.getHours() + offsetDestino);
+      console.log(fechaLlegadaObj);
+
+
+      // Formatea la fecha de llegada correctamente usando fechaLlegadaObj
+      this.fechaLlegada = fechaLlegadaObj.toISOString().slice(0, 16); // Formato "YYYY-MM-DDTHH:mm"
+     } else {
+      this.fechaLlegada = ''; // Resetea si faltan datos
+    }
+  }
+
+  // Esta función debe llamarse al seleccionar origen o destino
+  onSeleccionarRuta(): void {
+    this.calcularTiempoEstimado();
   }
 
   getTodayDate(): string {

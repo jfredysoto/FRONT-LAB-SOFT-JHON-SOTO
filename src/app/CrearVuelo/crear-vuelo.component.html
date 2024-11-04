@@ -12,27 +12,36 @@
     <div>
       <label for="tipoVuelo" class="block text-gray-700 font-medium mb-2">Tipo de Vuelo</label>
       <select id="tipoVuelo" formControlName="tipoVuelo" (change)="onTipoVueloChange()"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+              class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700" required>
         <option value="">Seleccione tipo de vuelo</option>
         <option value="nacional">Nacional</option>
         <option value="internacional">Internacional</option>
       </select>
+      <div *ngIf="vueloForm.get('tipoVuelo')?.invalid && vueloForm.get('tipoVuelo')?.touched">
+        <small class="text-red-500" *ngIf="vueloForm.get('tipoVuelo')?.errors?.['required']">El campo tipo de vuelo es requerido.</small>
+      </div>
     </div>
 
     <!-- Origen -->
     <div>
       <label for="origen" class="block text-gray-700 font-medium mb-2">Origen</label>
-      <select id="origen" formControlName="origen" (change)="onOrigenChange()" class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+      <select id="origen" formControlName="origen" (change)="onOrigenChange()" class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700" required>
           <option *ngFor="let ciudad of ciudadesOrigen" [value]="ciudad">{{ ciudad }}</option>
       </select>
+      <div *ngIf="vueloForm.get('origen')?.invalid && vueloForm.get('origen')?.touched">
+        <small class="text-red-500" *ngIf="vueloForm.get('origen')?.errors?.['required']">El campo origen es requerido.</small>
+      </div>
     </div>
 
     <!-- Destino -->
     <div>
       <label for="destino" class="block text-gray-700 font-medium mb-2">Destino</label>
-      <select id="destino" formControlName="destino" class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+      <select id="destino" formControlName="destino" class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700" required>
           <option *ngFor="let ciudad of ciudadesDestino" [value]="ciudad">{{ ciudad }}</option>
       </select>
+      <div *ngIf="vueloForm.get('destino')?.invalid && vueloForm.get('destino')?.touched">
+        <small class="text-red-500" *ngIf="vueloForm.get('destino')?.errors?.['required']">El campo destino es requerido.</small>
+      </div>
     </div>
 
     <!-- Tiempo Estimado de Vuelo -->
@@ -55,15 +64,43 @@
           type="date"
           formControlName="fechaVuelo"
           [min]="todayDate"
-          class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+          class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700" required>
+        <div *ngIf="vueloForm.get('fechaVuelo')?.invalid && vueloForm.get('fechaVuelo')?.touched">
+          <small class="text-red-500" *ngIf="vueloForm.get('fechaVuelo')?.errors?.['required']">El campo fecha de vuelo es requerido.</small>
+        </div>
     </div>
 
     <!-- Campo Hora del Vuelo -->
     <div>
       <label for="horaVuelo" class="block text-gray-700 font-medium mb-2">Hora del vuelo</label>
       <input type="time" formControlName="horaVuelo" id="horaVuelo" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+      <div *ngIf="vueloForm.get('horaVuelo')?.invalid && vueloForm.get('horaVuelo')?.touched">
+        <small class="text-red-500" *ngIf="vueloForm.get('horaVuelo')?.errors?.['required']">El campo hora de vuelo es requerido.</small>
+      </div>
     </div>
 
+
+    <!-- Campo de Fecha y Hora de Llegada (Calculada) -->
+    <div>
+      <label for="fechaLlegada" class="block text-gray-700 font-medium mb-2">Fecha y Hora de Llegada (Calculada) <span title="La fecha y hora son locales del destino."> (?) </span></label>
+      <input
+          id="fechaLlegada"
+          type="datetime-local"
+          [value]="fechaLlegada | date:'yyyy-MM-ddTHH:mm'"
+          [disabled]="true"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700">
+    </div>
+
+    <!-- Campo de costo -->
+    <div>
+      <label for="costoVuelo" class="block text-gray-700 font-medium mb-2">Costo del vuelo por persona:</label>
+      <input type="number" id="costoVuelo" formControlName="costoVuelo" placeholder="Costo"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700" />
+      <div *ngIf="vueloForm.get('costoVuelo')?.invalid && vueloForm.get('costoVuelo')?.touched">
+        <small class="text-red-500" *ngIf="vueloForm.get('costoVuelo')?.errors?.['required']">El costo es requerido.</small>
+        <small class="text-red-500" *ngIf="vueloForm.get('costoVuelo')?.errors?.['min']">El costo debe ser mayor que 0.</small>
+      </div>
+    </div>
 
 
     <!-- Botón de Confirmación -->
