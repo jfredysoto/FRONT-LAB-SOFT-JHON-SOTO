@@ -38,9 +38,8 @@
             <div *ngIf="isLoggedIn && isAdmin" class="admin-menu">
               <a href="/crear-vuelo" class="admin-button">Crear Vuelo</a>
               <a href="/editar-vuelo/1" class="admin-button">Editar Vuelo</a> <!-- Reemplaza "1" con el ID del vuelo correspondiente -->
-              <a href="/cancelar-vuelo/1" class="admin-button">Cancelar Vuelo</a> <!-- Cambia "1" por el ID del vuelo dinámicamente -->
-              </div>
-            </div>                                                                                        
+              <a href="cancelar-vuelo" class="admin-button">Cancelar Vuelo</a> <!-- Cambia "1" por el ID del vuelo dinámicamente -->
+              </div>                                                                                       
           </div>
               <!-- Opciones de SuperUsuario -->
               <div *ngIf="isLoggedIn && isRoot" class="super-usuario-menu">

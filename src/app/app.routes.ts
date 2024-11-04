@@ -50,9 +50,9 @@ export const routes: Routes = [
     canActivate: [AutenticacionAdminGuard] // Solo accesible para administradores autenticados
   },
   {
-    path: 'cancelar-vuelo/:id',
+    path: 'cancelar-vuelo',
     component: CancelarVueloComponent,
-    canActivate: [AutenticacionAdminGuard] // Proteger la ruta con AuthGuard para administradores
+    canActivate: [AutenticacionAdminGuard] // Asegúrate de que solo los administradores puedan acceder
   },
   {
     path: 'cambiar-contrasena', // Ruta del componente

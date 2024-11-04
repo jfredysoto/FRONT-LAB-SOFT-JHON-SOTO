@@ -1,29 +1,26 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CancelarVueloComponent } from '../cancelar-vuelo/cancelar-vuelo.component';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-vuelos',
-  templateUrl: './vuelos.component.html',
-  styleUrls: ['./vuelos.component.scss']
+  selector: 'app-cancelar-vuelo',
+  templateUrl: './cancelar-vuelo.component.html',
+  styleUrls: ['./cancelar-vuelo.component.scss']
 })
-export class VuelosComponent implements OnInit {
-  vuelos = [
-    // Ejemplo de lista de vuelos
-    { id: 1, nombre: 'Vuelo 1', estado: 'Pendiente' },
-    { id: 2, nombre: 'Vuelo 2', estado: 'Pendiente' },
-    // Agrega más vuelos aquí
-  ];
+export class CancelarVueloComponent {
+  @Output() onClose = new EventEmitter<void>();
+  @Output() onConfirm = new EventEmitter<void>();
 
-  vueloIdParaCancelar: number | null = null; // Para almacenar el ID del vuelo a cancelar
+  abrirModal() {
+    // Lógica para mostrar el modal, puedes añadir una clase CSS para hacerlo visible
+  }
 
-  @ViewChild(CancelarVueloComponent) cancelarVueloComponent!: CancelarVueloComponent;
+  cerrarModal() {
+    this.onClose.emit();
+    // Lógica para ocultar el modal
+  }
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  abrirModalCancelarVuelo(vueloId: number) {
-    this.vueloIdParaCancelar = vueloId;
-    this.cancelarVueloComponent.abrirModal();
+  confirmarCancelacion() {
+    this.onConfirm.emit();
+    this.cerrarModal();
   }
 }
+
