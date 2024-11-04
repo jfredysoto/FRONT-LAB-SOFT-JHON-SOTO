@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { VuelosService } from '../services/vuelos/vuelos.service';
 
 @Component({
   selector: 'app-crear-vuelo',
@@ -9,12 +10,13 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule]
 })
-export class CrearVueloComponent {
+export class CrearVueloComponent implements OnInit{
   vueloForm: FormGroup;
-  mensajeExito: string = ''; // Define mensajeExito para mostrar mensajes de éxito
-  mensajeError: string = ''; // Define mensajeError para mostrar mensajes de error
+  mensajeExito: string = '';
+  mensajeError: string = '';
+  proximoIdVuelo: number | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private vuelosService: VuelosService) {
     this.vueloForm = this.fb.group({
       tipoVuelo: ['', Validators.required],
       fechaVuelo: ['', Validators.required],
@@ -24,15 +26,31 @@ export class CrearVueloComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.obtenerProximoIdVuelo();
+  }
+
+  obtenerProximoIdVuelo(): void {
+    this.vuelosService.obtenerProximoId().subscribe({
+      next: (id) => {
+        this.proximoIdVuelo = id;
+      },
+      error: (err) => {
+        console.error('Error al obtener el próximo ID:', err);
+        this.mensajeError = 'Error al cargar el ID del vuelo';
+      }
+    });
+  }
+
   crearVuelo(): void {
     if (this.vueloForm.valid) {
       console.log('Formulario de vuelo enviado', this.vueloForm.value);
       this.mensajeExito = 'Vuelo creado exitosamente';
-      this.mensajeError = ''; // Limpia cualquier mensaje de error previo
+      this.mensajeError = '';
     } else {
       console.error('Formulario inválido');
       this.mensajeError = 'Por favor, complete todos los campos correctamente';
-      this.mensajeExito = ''; // Limpia cualquier mensaje de éxito previo
+      this.mensajeExito = '';
     }
   }
 }
