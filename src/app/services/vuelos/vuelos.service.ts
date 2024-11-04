@@ -1,6 +1,6 @@
 // vuelos.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,5 +13,10 @@ export class VuelosService {
 
   obtenerProximoId(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/proximo-id`);
+  }
+
+  obtenerCiudadesDisponibles(tipoVuelo: string): Observable<string[]>{
+    let params = new HttpParams().set('tipoVuelo', tipoVuelo);
+    return this.http.get<string[]>(`${this.apiUrl}/ciudades-disponibles`, { params });
   }
 }
