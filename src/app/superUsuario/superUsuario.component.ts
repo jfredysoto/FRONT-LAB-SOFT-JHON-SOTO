@@ -1,18 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule para ngModel
-import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
+import { FormsModule, NgForm } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-super-usuario',
   templateUrl: './superUsuario.component.html',
   styleUrls: ['./superUsuario.component.scss'],
-  standalone: true, // Marca el componente como standalone
-  imports: [FormsModule, CommonModule] // Importa FormsModule aquí
+  standalone: true,
+  imports: [FormsModule, CommonModule]
 })
 export class SuperUsuarioComponent implements OnInit {
   listaAdministradores: any[] = [];
-  adminData = { id: 0, nombre: '', email: '', idTipo: 1 }; // Define los campos requeridos
+  
+  // Definición completa de `adminData` con todos los campos necesarios
+  adminData = {
+    id: 0,
+    dni: '', 
+    nombres: '', 
+    apellidos: '', 
+    fechaNacimiento: '', 
+    lugarNacimiento: '', 
+    direccionFacturacion: '', 
+    genero: '', 
+    correo: '', 
+    usuario: '', 
+    contrasena: '', 
+    notis: false,
+    idTipo: 2,  // Especifica que es tipo 2 para administrador
+    imagen: null  // Campo para la imagen opcional
+  };
+  
   isEditMode = false;
   mensajeError = '';
   mensajeExito = '';
@@ -23,10 +41,11 @@ export class SuperUsuarioComponent implements OnInit {
     this.cargarAdministradores();
   }
 
-  cargarAdministradores(): void {
+   // Método para cargar administradores
+   cargarAdministradores(): void {
     this.authService.getAdministradores().subscribe(
-      (administradores) => {
-        this.listaAdministradores = administradores.filter(admin => admin.idTipo === 1); // Filtra solo administradores
+      (administradores: any[]) => {
+        this.listaAdministradores = administradores.filter((admin: any) => admin.idTipo === 2);
         this.mensajeExito = 'Administradores cargados exitosamente';
       },
       (error: any) => {
@@ -35,24 +54,49 @@ export class SuperUsuarioComponent implements OnInit {
     );
   }
 
-  agregarAdministrador(): void {
-    this.authService.crearAdministrador(this.adminData).subscribe(
-      () => {
-        this.mensajeExito = 'Administrador agregado exitosamente';
-        this.cargarAdministradores();
-        this.resetForm();
-      },
-      (error: any) => {
-        this.mensajeError = 'Error al agregar administrador';
-      }
-    );
+  // Dentro de SuperUsuarioComponent
+private calcularEdad(fechaNacimiento: string): number {
+  const fechaNacimientoDate = new Date(fechaNacimiento);
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+  const mes = hoy.getMonth() - fechaNacimientoDate.getMonth();
+  
+  if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimientoDate.getDate())) {
+    edad--;
+  }
+  
+  return edad;
+}
+
+// Modifica el método agregarAdministrador para validar la edad
+agregarAdministrador(): void {
+  const edad = this.calcularEdad(this.adminData.fechaNacimiento);
+  
+  if (edad < 18) {
+    this.mensajeError = 'El administrador debe ser mayor de 18 años.';
+    return; // Detener la ejecución si la edad es menor a 18
   }
 
+  this.authService.crearAdministrador(this.adminData).subscribe(
+    () => {
+      this.mensajeExito = 'Administrador agregado exitosamente';
+      this.cargarAdministradores();
+      this.resetForm();
+    },
+    (error: any) => {
+      this.mensajeError = 'Error al agregar administrador';
+    }
+  );
+}
+
+
+  // Método para cargar datos de un administrador en modo de edición
   cargarAdministrador(admin: any): void {
     this.isEditMode = true;
     this.adminData = { ...admin };
   }
 
+  // Método para modificar un administrador existente
   modificarAdministrador(): void {
     this.authService.modificarAdministrador(this.adminData.id, this.adminData).subscribe(
       () => {
@@ -66,11 +110,37 @@ export class SuperUsuarioComponent implements OnInit {
     );
   }
 
+  // Método para restablecer el formulario
   resetForm(): void {
     this.isEditMode = false;
-    this.adminData = { id: 0, nombre: '', email: '', idTipo: 1 };
+    this.adminData = {
+      id: 0,
+      dni: '', 
+      nombres: '', 
+      apellidos: '', 
+      fechaNacimiento: '', 
+      lugarNacimiento: '', 
+      direccionFacturacion: '', 
+      genero: '', 
+      correo: '', 
+      usuario: '', 
+      contrasena: '', 
+      notis: false,
+      idTipo: 2,
+      imagen: null
+    };
   }
+
+  // Método para manejar la selección de archivo de imagen de usuario
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.adminData.imagen = file;
+    }
+  }
+  
 }
+
 
 
 

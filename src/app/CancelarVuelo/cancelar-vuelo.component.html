@@ -1,0 +1,8 @@
+<div class="modal-background" *ngIf="mostrarModal">
+    <div class="modal-content">
+      <button (click)="cerrarModal()" class="close-button">&times;</button>
+      <h3 class="modal-title">¿Está seguro que desea cancelar el vuelo?</h3>
+      <button (click)="confirmarCancelacion()" class="confirm-button">Confirmar</button>
+    </div>
+  </div>
+  

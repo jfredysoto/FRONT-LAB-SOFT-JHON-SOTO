@@ -19,6 +19,8 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false; // Controla si el usuario está autenticado
   accountDeletedMessage: string | null = null;
   isRoot: boolean = false; // Verifica si el usuario es SuperUsuario (Root)
+  isAdmin: boolean = false; // Nueva propiedad para verificar si el usuario es administrador
+
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class HeaderComponent implements OnInit {
       this.userId = storedUserId;
       this.isLoggedIn = true;
       this.isRoot = this.authService.isRoot(); // Verifica si es SuperUsuario
+      this.isAdmin = this.authService.isAdmin(); // Verifica si es administrador
     }
   }
 
@@ -86,6 +89,7 @@ export class HeaderComponent implements OnInit {
           if (response.userType) {
             this.authService.setUserType(response.userType);
             this.isRoot = this.authService.isRoot(); // Verifica si es SuperUsuario
+            this.isAdmin = this.authService.isAdmin(); // Verifica si es administrador
           }
 
           alert('Inicio de sesión exitoso');
@@ -116,6 +120,7 @@ export class HeaderComponent implements OnInit {
     this.password = '';
     this.userId = '';
     this.isRoot = false;
+    this.isAdmin = false;
 
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userId');

@@ -7,6 +7,10 @@ import { CambiarContrasenaComponent } from './CambiarContraseña/cambiar-contras
 import { SuperUsuarioComponent } from './superUsuario/superUsuario.component';
 import { AutenticacionGuard} from './protecciones/autenticacion.guard';
 import { RolGuard } from './protecciones/rol.guard';
+import { CrearVueloComponent} from './CrearVuelo/crear-vuelo.component';
+import { AutenticacionAdminGuard } from './AuthGuard/auth.guard';
+import { EditarVueloComponent } from './EditarVuelo/editar-vuelo.component';
+import { CancelarVueloComponent } from './CancelarVuelo/cancelar-vuelo.component';
 export const routes: Routes = [
   {
     path: 'header', // Ruta principal (raíz)
@@ -33,6 +37,22 @@ export const routes: Routes = [
     component: SuperUsuarioComponent, // Componente standalone
     canActivate: [AutenticacionGuard, RolGuard],
     data: { rolEsperado: 'Root' } // Solo accesible para usuarios con rol Root 
+  },
+  {
+    path: 'crear-vuelo', // Ruta del componente
+    component: CrearVueloComponent, // Componente standalone
+    canActivate: [AutenticacionAdminGuard], // Protegido por autenticación
+    data: { rolEsperado: 'Admin' } // Solo accesible para usuarios con rol Admin
+  },
+  {
+    path: 'editar-vuelo/:id',
+    component: EditarVueloComponent,
+    canActivate: [AutenticacionAdminGuard] // Solo accesible para administradores autenticados
+  },
+  {
+    path: 'cancelar-vuelo/:id',
+    component: CancelarVueloComponent,
+    canActivate: [AutenticacionAdminGuard] // Proteger la ruta con AuthGuard para administradores
   },
   {
     path: 'cambiar-contrasena', // Ruta del componente

@@ -1,30 +1,120 @@
-<div class="mt-32 max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-  <h2 class="text-2xl font-bold text-center mb-6">{{ isEditMode ? 'Editar Administrador' : 'Agregar Administrador' }}</h2>
+<div class="form-container max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+  <h2 class="text-2xl font-bold text-center mb-6">{{ isEditMode ? 'Editar Administrador' : 'Registrar Administrador' }}</h2>
 
-  <!-- Formulario de administrador -->
-  <form (ngSubmit)="isEditMode ? modificarAdministrador() : agregarAdministrador()" class="space-y-6">
-    
-    <!-- Campo de ID (solo en modo edición) -->
-    <div *ngIf="isEditMode" class="flex flex-col">
-      <label class="font-semibold text-gray-700">ID:</label>
-      <input type="text" [(ngModel)]="adminData.id" name="id" class="mt-2 p-3 border border-gray-300 rounded-lg bg-gray-100" readonly />
+  <form #adminForm="ngForm" (ngSubmit)="isEditMode ? modificarAdministrador() : agregarAdministrador()" class="space-y-6" novalidate>
+
+    <!-- DNI -->
+    <div class="flex flex-col">
+      <label class="font-semibold text-gray-700">DNI:</label>
+      <input type="text" [(ngModel)]="adminData.dni" name="dni" required pattern="^[^\s][0-9]{7,9}$" (ngModelChange)="adminData.dni = adminData.dni.trimStart()" class="mt-2 p-3 border border-gray-300 rounded-lg" placeholder="Documento de Identidad" />
+      <span *ngIf="adminForm.controls['dni']?.invalid && adminForm.controls['dni']?.touched" class="text-red-500 text-sm">
+        El DNI debe contener entre 8 y 10 dígitos numéricos y no debe comenzar con espacios.
+      </span>
     </div>
 
-    <!-- Nombre -->
+    <!-- Nombres -->
     <div class="flex flex-col">
-      <label class="font-semibold text-gray-700">Nombre:</label>
-      <input type="text" [(ngModel)]="adminData.nombre" name="nombre" class="mt-2 p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:border-blue-400" required />
+      <label class="font-semibold text-gray-700">Nombres:</label>
+      <input type="text" [(ngModel)]="adminData.nombres" name="nombres" required pattern="^[^\s][a-zA-ZÀ-ÿ\s]{1,49}$" (ngModelChange)="adminData.nombres = adminData.nombres.trimStart()" class="mt-2 p-3 border border-gray-300 rounded-lg" placeholder="Nombres" />
+      <span *ngIf="adminForm.controls['nombres']?.invalid && adminForm.controls['nombres']?.touched" class="text-red-500 text-sm">
+        Los nombres deben contener solo letras, no tener espacios al inicio, y tener entre 2 y 50 caracteres.
+      </span>
     </div>
 
-    <!-- Email -->
+    <!-- Apellidos -->
     <div class="flex flex-col">
-      <label class="font-semibold text-gray-700">Email:</label>
-      <input type="email" [(ngModel)]="adminData.email" name="email" class="mt-2 p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:border-blue-400" required />
+      <label class="font-semibold text-gray-700">Apellidos:</label>
+      <input type="text" [(ngModel)]="adminData.apellidos" name="apellidos" required pattern="^[^\s][a-zA-ZÀ-ÿ\s]{1,49}$" (ngModelChange)="adminData.apellidos = adminData.apellidos.trimStart()" class="mt-2 p-3 border border-gray-300 rounded-lg" placeholder="Apellidos" />
+      <span *ngIf="adminForm.controls['apellidos']?.invalid && adminForm.controls['apellidos']?.touched" class="text-red-500 text-sm">
+        Los apellidos deben contener solo letras, no tener espacios al inicio, y tener entre 2 y 50 caracteres.
+      </span>
+    </div>
+
+    <!-- Fecha de Nacimiento -->
+    <div class="flex flex-col">
+      <label class="font-semibold text-gray-700">Fecha de Nacimiento:</label>
+      <input type="date" [(ngModel)]="adminData.fechaNacimiento" name="fechaNacimiento" required class="mt-2 p-3 border border-gray-300 rounded-lg" />
+      <span *ngIf="adminForm.controls['fechaNacimiento']?.invalid && adminForm.controls['fechaNacimiento']?.touched" class="text-red-500 text-sm">
+        La fecha de nacimiento es obligatoria.
+      </span>
+    </div>
+
+    <!-- Lugar de Nacimiento -->
+    <div class="flex flex-col">
+      <label class="font-semibold text-gray-700">Lugar de Nacimiento:</label>
+      <input type="text" [(ngModel)]="adminData.lugarNacimiento" name="lugarNacimiento" required pattern="^[^\s][a-zA-ZÀ-ÿ\s]{1,49}$" (ngModelChange)="adminData.lugarNacimiento = adminData.lugarNacimiento.trimStart()" class="mt-2 p-3 border border-gray-300 rounded-lg" placeholder="Lugar de nacimiento" />
+      <span *ngIf="adminForm.controls['lugarNacimiento']?.invalid && adminForm.controls['lugarNacimiento']?.touched" class="text-red-500 text-sm">
+        El lugar de nacimiento debe contener solo letras, no tener espacios al inicio, y tener entre 2 y 50 caracteres.
+      </span>
+    </div>
+
+    <!-- Dirección de Facturación -->
+    <div class="flex flex-col">
+      <label class="font-semibold text-gray-700">Dirección de Facturación:</label>
+      <input type="text" [(ngModel)]="adminData.direccionFacturacion" name="direccionFacturacion" required pattern="^[^\s].{4,99}$" (ngModelChange)="adminData.direccionFacturacion = adminData.direccionFacturacion.trimStart()" class="mt-2 p-3 border border-gray-300 rounded-lg" placeholder="Dirección de facturación" />
+      <span *ngIf="adminForm.controls['direccionFacturacion']?.invalid && adminForm.controls['direccionFacturacion']?.touched" class="text-red-500 text-sm">
+        La dirección debe tener entre 5 y 100 caracteres y no debe comenzar con espacios.
+      </span>
+    </div>
+
+    <!-- Género -->
+    <div class="flex flex-col">
+      <label class="font-semibold text-gray-700">Género:</label>
+      <select [(ngModel)]="adminData.genero" name="genero" required class="mt-2 p-3 border border-gray-300 rounded-lg">
+        <option value="">Seleccionar</option>
+        <option value="1">Hombre</option>
+        <option value="2">Mujer</option>
+      </select>
+      <span *ngIf="adminForm.controls['genero']?.invalid && adminForm.controls['genero']?.touched" class="text-red-500 text-sm">
+        Selecciona una opción de género.
+      </span>
+    </div>
+
+    <!-- Correo Electrónico -->
+    <div class="flex flex-col">
+      <label class="font-semibold text-gray-700">Correo Electrónico:</label>
+      <input type="email" [(ngModel)]="adminData.correo" name="correo" required pattern="^[^\s][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" (ngModelChange)="adminData.correo = adminData.correo.trimStart()" class="mt-2 p-3 border border-gray-300 rounded-lg" placeholder="email@dominio.com" />
+      <span *ngIf="adminForm.controls['correo']?.invalid && adminForm.controls['correo']?.touched" class="text-red-500 text-sm">
+        Ingresa un correo electrónico válido y sin espacios al inicio.
+      </span>
+    </div>
+
+    <!-- Usuario -->
+    <div class="flex flex-col">
+      <label class="font-semibold text-gray-700">Usuario:</label>
+      <input type="text" [(ngModel)]="adminData.usuario" name="usuario" required pattern="^[^\s]\S*$" (ngModelChange)="adminData.usuario = adminData.usuario.trimStart()" class="mt-2 p-3 border border-gray-300 rounded-lg" placeholder="Nombre de usuario" />
+      <span *ngIf="adminForm.controls['usuario']?.invalid && adminForm.controls['usuario']?.touched" class="text-red-500 text-sm">
+        El nombre de usuario no debe contener espacios al inicio ni en el medio.
+      </span>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="flex flex-col">
+      <label class="font-semibold text-gray-700">Contraseña:</label>
+      <input type="password" [(ngModel)]="adminData.contrasena" name="contrasena" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" (ngModelChange)="adminData.contrasena = adminData.contrasena.trimStart()" class="mt-2 p-3 border border-gray-300 rounded-lg" placeholder="••••••••" />
+      <span *ngIf="adminForm.controls['contrasena']?.invalid && adminForm.controls['contrasena']?.touched" class="text-red-500 text-sm">
+        La contraseña debe tener al menos 8 caracteres y contener letras y números.
+      </span>
+    </div>
+
+    <!-- Imagen de Usuario (opcional) -->
+    <div class="flex flex-col">
+      <label class="font-semibold text-gray-700">Imagen de Usuario (opcional):</label>
+      <input type="file" (change)="onFileSelected($event)" class="mt-2 p-3 border border-gray-300 rounded-lg" />
+    </div>
+
+    <!-- Notificaciones -->
+    <div class="flex items-center">
+      <input type="checkbox" [(ngModel)]="adminData.notis" name="notis" required class="mr-2" />
+      <label class="font-semibold text-gray-700">Acepto los términos y condiciones</label>
+      <span *ngIf="adminForm.controls['notis']?.invalid && adminForm.controls['notis']?.touched" class="text-red-500 text-sm">
+        Debes aceptar los términos y condiciones.
+      </span>
     </div>
 
     <!-- Botones de acción -->
     <div class="flex space-x-4 justify-end">
-      <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">{{ isEditMode ? 'Modificar' : 'Agregar' }}</button>
+      <button type="submit" [disabled]="adminForm.invalid" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">{{ isEditMode ? 'Modificar' : 'Registrar' }}</button>
       <button type="button" (click)="resetForm()" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">Cancelar</button>
     </div>
   </form>
@@ -32,26 +122,5 @@
   <!-- Mensajes de éxito y error -->
   <div *ngIf="mensajeExito" class="mt-6 p-4 text-green-700 bg-green-100 border border-green-200 rounded-lg">{{ mensajeExito }}</div>
   <div *ngIf="mensajeError" class="mt-6 p-4 text-red-700 bg-red-100 border border-red-200 rounded-lg">{{ mensajeError }}</div>
-
-  <!-- Lista de administradores -->
-  <div *ngIf="mensajeExito" class="success-message">{{ mensajeExito }}</div>
-<div *ngIf="mensajeError" class="error-message">{{ mensajeError }}</div>
-
-<div *ngIf="listaAdministradores.length > 0" class="administradores-list">
-  <h3>Lista de Administradores</h3>
-  <ul>
-    <li *ngFor="let admin of listaAdministradores">
-      <strong>{{ admin.nombre }} {{ admin.apellido }}</strong> - {{ admin.correo }}
-    </li>
-  </ul>
 </div>
-</div>
-
-
-
-
-
-
-
-
 

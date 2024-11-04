@@ -171,6 +171,46 @@ a {
   accent-color: #4a90e2;
 }
 
+.menu-button {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  background-color: #1d4ed8; // Set the background to match other buttons
+  color: white;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.875rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #2563eb; // Slightly lighter blue on hover
+  }
+
+  &:focus {
+    outline: none;
+    background-color: #3b82f6;
+  }
+}
+
+.admin-button {
+  display: block;
+  width: 100%; // Asegura el mismo ancho que otros botones en el menú
+  padding: 10px 20px;
+  background-color: #1e40af; // Azul similar a los otros botones
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 8px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #1d4ed8; // Color de hover similar al botón "Crear Vuelo"
+  }
+}
+
+
 /* Estilos de navegación */
 nav {
   position: fixed;

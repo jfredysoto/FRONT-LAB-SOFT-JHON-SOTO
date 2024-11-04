@@ -91,19 +91,37 @@ export class AuthService {
     }
     return this.rolUsuario;
   }
-  
 
   // Método para obtener todos los administradores
-  getAdministradores(): Observable<any[]> {
-    // Asegúrate de que el backend esté enviando el Content-Type como application/json
-    return this.http.get<any[]>(`${this.apiURL}/usuarios/obtener-todos`);
+  getAdministradores(): Observable<any> {
+    return this.http.get(`${this.apiURL}/usuarios/obtener-todos`);
   }
 
-  // auth.service.ts
-crearAdministrador(datosAdmin: any): Observable<any> {
-  return this.http.post(`${this.apiURL}/Usuarios`, datosAdmin);
-}
+  // Método para crear un administrador con manejo de archivo de imagen
+  crearAdministrador(datosAdmin: any): Observable<any> {
+    const formData = new FormData();
 
+    // Añadir cada campo del administrador a FormData
+    formData.append('dni', datosAdmin.dni);
+    formData.append('nombres', datosAdmin.nombres);
+    formData.append('apellidos', datosAdmin.apellidos);
+    formData.append('fechaNacimiento', datosAdmin.fechaNacimiento);
+    formData.append('lugarNacimiento', datosAdmin.lugarNacimiento);
+    formData.append('direccionFacturacion', datosAdmin.direccionFacturacion);
+    formData.append('genero', datosAdmin.genero);
+    formData.append('correo', datosAdmin.correo);
+    formData.append('usuario', datosAdmin.usuario);
+    formData.append('contrasena', datosAdmin.contrasena);
+    formData.append('notis', String(datosAdmin.notis));
+    formData.append('idTipo', String(datosAdmin.idTipo));
+    
+    // Añadir el archivo de imagen si está presente
+    if (datosAdmin.imagen) {
+      formData.append('imagen', datosAdmin.imagen, datosAdmin.imagen.name);
+    }
+
+    return this.http.post(`${this.apiURL}/usuarios`, formData);
+  }
 
   eliminarAdministrador(adminId: number): Observable<any> {
     return this.http.delete(`${this.apiURL}/administradores/${adminId}`);
@@ -112,6 +130,15 @@ crearAdministrador(datosAdmin: any): Observable<any> {
   modificarAdministrador(adminId: number, datosActualizados: any): Observable<any> {
     return this.http.patch(`${this.apiURL}/editar-perfil/${adminId}`, datosActualizados);
   }
+
+  obtenerVueloPorId(vueloId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiURL}/vuelos/${vueloId}`);
+  }
+
+  editarVuelo(vueloId: number, datosVuelo: any): Observable<any> {
+    return this.http.put<any>(`${this.apiURL}/vuelos/${vueloId}`, datosVuelo);
+  }
 }
+
 
 
