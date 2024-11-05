@@ -23,6 +23,7 @@ export class CrearVueloComponent implements OnInit{
   fechaLlegada: string = ''; // Fecha calculada de llegada
   tiempoEstimadoVuelo: number = 0; // En horas, calculado según origen y destino
   costoVuelo: number | null = null;
+
   // Diccionario con tiempos estimados de vuelo en horas
   tiempoDeVueloEstimado: { [key: string]: number } = {
     // Vuelos Nacionales
@@ -112,12 +113,49 @@ export class CrearVueloComponent implements OnInit{
 
   ngOnInit(): void {
     this.obtenerProximoIdVuelo();
+
+    // Suscripciones a cambios de fecha y hora de vuelo
+    this.vueloForm.get('fechaVuelo')?.valueChanges.subscribe(() => {
+      this.validarFechaYHoraVuelo();
+      this.calcularFechaLlegada();
+    });
+    this.vueloForm.get('horaVuelo')?.valueChanges.subscribe(() => {
+      this.validarFechaYHoraVuelo();
+      this.calcularFechaLlegada();
+    });
+
     // Suscripciones existentes
     this.vueloForm.get('origen')?.valueChanges.subscribe(() => this.calcularTiempoEstimado());
     this.vueloForm.get('destino')?.valueChanges.subscribe(() => this.calcularTiempoEstimado());
     this.vueloForm.get('fechaVuelo')?.valueChanges.subscribe(() => this.calcularFechaLlegada());
     this.vueloForm.get('horaVuelo')?.valueChanges.subscribe(() => this.calcularFechaLlegada());
     this.vueloForm.get('destino')?.valueChanges.subscribe(() => this.calcularCostoVuelo());
+  }
+
+  validarFechaYHoraVuelo(): void {
+    const fechaVuelo = this.vueloForm.get('fechaVuelo')?.value;
+    const horaVuelo = this.vueloForm.get('horaVuelo')?.value;
+
+    if (!fechaVuelo || !horaVuelo) return;
+
+    const fechaSeleccionada = new Date(`${fechaVuelo}T${horaVuelo}`);
+    const fechaActual = new Date();
+
+    // Si la fecha es hoy, verifica que la hora sea al menos 2 horas después de la hora actual
+    if (fechaVuelo === this.todayDate) {
+      const dosHorasDespues = new Date(fechaActual.getTime() + 2 * 60 * 60 * 1000);
+      if (fechaSeleccionada <= dosHorasDespues) {
+        this.mensajeError = 'La hora de vuelo debe ser al menos 2 horas después de la hora actual';
+        this.vueloForm.get('horaVuelo')?.setErrors({ horaInvalida: true });
+      } else {
+        this.mensajeError = '';
+        this.vueloForm.get('horaVuelo')?.setErrors(null);
+      }
+    } else {
+      // Si es una fecha futura, resetea cualquier error en la hora de vuelo
+      this.mensajeError = '';
+      this.vueloForm.get('horaVuelo')?.setErrors(null);
+    }
   }
 
   calcularCostoVuelo(): void {
