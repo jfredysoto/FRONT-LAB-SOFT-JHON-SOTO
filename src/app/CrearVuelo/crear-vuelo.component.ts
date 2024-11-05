@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { VuelosService } from '../services/vuelos/vuelos.service';
 import { FormsModule } from '@angular/forms';
-
 @Component({
   selector: 'app-crear-vuelo',
   templateUrl: './crear-vuelo.component.html',
@@ -288,12 +287,20 @@ export class CrearVueloComponent implements OnInit{
 
   crearVuelo(): void {
     if (this.vueloForm.valid) {
-      console.log('Formulario de vuelo enviado', this.vueloForm.value);
-      this.mensajeExito = 'Vuelo creado exitosamente';
-      this.mensajeError = '';
+      const nuevoVuelo = this.vueloForm.value;
+      this.vuelosService.agregarVuelo(nuevoVuelo).subscribe(
+        () => {
+          this.mensajeExito = 'Vuelo creado exitosamente';
+          this.mensajeError = '';
+          this.vueloForm.reset();
+        },
+        (error) => {
+          console.error('Error al agregar el vuelo', error);
+          this.mensajeError = 'Hubo un problema al crear el vuelo';
+        }
+      );
     } else {
-      console.error('Formulario inválido');
-      this.mensajeError = 'Por favor, complete todos los campos correctamente';
+      this.mensajeError = 'Por favor complete todos los campos correctamente';
       this.mensajeExito = '';
     }
   }

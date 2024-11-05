@@ -104,6 +104,28 @@
     </div>
     <a href="#" class="more-offers-link">Descubrir más ofertas →</a>
   </div>
+
+  <!-- home.component.html -->
+
+<div class="flights-list-section">
+  <h2>Vuelos Disponibles</h2>
+  <div *ngIf="vuelos.length > 0; else noFlights">
+    <div *ngFor="let vuelo of vuelos" class="flight-card">
+      <h3>Vuelo: {{ vuelo.nombre }}</h3>
+      <p>Origen: {{ vuelo.origen }}</p>
+      <p>Destino: {{ vuelo.destino }}</p>
+      <p>Fecha: {{ vuelo.fechaVuelo | date: 'shortDate' }}</p>
+      <p>Hora: {{ vuelo.horaVuelo | date: 'shortTime' }}</p>
+      <p>Costo: {{ vuelo.costoVuelo | currency }}</p>
+    </div>
+  </div>
+  <ng-template #noFlights>
+    <p>No hay vuelos disponibles actualmente.</p>
+  </ng-template>
+</div>
+
+
+
   
   <div class="prepare-travel-section">
     <h2>Prepárate para viajar</h2>
