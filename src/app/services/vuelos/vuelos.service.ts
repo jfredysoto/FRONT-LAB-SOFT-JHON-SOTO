@@ -11,6 +11,10 @@ export class VuelosService {
 
   constructor(private http: HttpClient) {}
 
+  crearVuelo(vueloData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/crear-vuelo`, vueloData);
+  }
+
   obtenerProximoId(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/proximo-id`);
   }

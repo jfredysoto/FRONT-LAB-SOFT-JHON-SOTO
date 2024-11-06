@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { VuelosService } from '../services/vuelos/vuelos.service';
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-crear-vuelo',
   templateUrl: './crear-vuelo.component.html',
@@ -106,6 +107,7 @@ export class CrearVueloComponent implements OnInit{
       horaVuelo: ['', Validators.required],
       tiempoEstimado: [{ value: '', disabled: true }],
       costoVuelo: [this.costoVuelo, [Validators.required, Validators.min(1)]], // Campo de costo
+      creadoPor: ['usuario_actual', Validators.required],
     });
     this.todayDate = this.getTodayDate();
   }
@@ -130,6 +132,80 @@ export class CrearVueloComponent implements OnInit{
     this.vueloForm.get('horaVuelo')?.valueChanges.subscribe(() => this.calcularFechaLlegada());
     this.vueloForm.get('destino')?.valueChanges.subscribe(() => this.calcularCostoVuelo());
   }
+
+  // Función para formatear el tiempo en "HH:mm:ss"
+  formatearTiempoDeVuelo(tiempo: string): string {
+    const horasDecimal = parseFloat(tiempo.replace("hrs", "").trim()); // Convierte el tiempo a número decimal
+    const horas = Math.floor(horasDecimal); // Parte entera como horas
+    const minutos = Math.round((horasDecimal - horas) * 60); // Fracción convertida a minutos
+    return `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:00`;
+  }
+
+  // Función para formatear las horas en HH:mm:ss
+  formatearHora(hora: string): string {
+    const partes = hora.split(":");
+    if (partes.length === 2) {
+      return `${partes[0]}:${partes[1]}:00`;  // Si solo tiene HH:mm, le agregamos ":00" para el formato completo
+    }
+    return hora; // Si ya tiene el formato HH:mm:ss, lo retorna tal cual
+  }
+
+  crearVuelo(): void {
+    if (this.vueloForm.invalid) {
+      this.mensajeError = 'Por favor completa todos los campos requeridos.';
+      return;
+    }
+    const fechaHoraLlegada = this.fechaLlegada;
+
+    const [fechaLlegada] = fechaHoraLlegada.split("T");
+
+    // Formatear las horas en HH:mm:ss antes de enviarlas
+    const horaVuelo = this.formatearHora(this.vueloForm.get('horaVuelo')?.value);
+    const horaLlegada = this.formatearHora(this.fechaLlegada.split("T")[1]); // Asumimos que tienes la hora como "T" separador
+
+
+    const vueloData = {
+      //id: this.proximoIdVuelo,
+      fechaVuelo: this.vueloForm.get('fechaVuelo')?.value, //
+      horaVuelo: horaVuelo, //
+      origen: this.vueloForm.get('origen')?.value, //
+      destino: this.vueloForm.get('destino')?.value, //
+      tiempoDeVuelo: this.formatearTiempoDeVuelo(this.tiempoEstimado,),
+      idTipoVuelo: this.vueloForm.value.tipoVuelo === 'nacional' ? 1 : 2,
+      fechaLlegada: fechaLlegada,
+      horaLlegada:  horaLlegada,
+      costoPorPersona: this.vueloForm.get('costoVuelo')?.value,
+      creadoPor: this.vueloForm.get('creadoPor')?.value,
+      //fechaCreacion: new Date().toISOString(),
+      estado: 0
+    };
+
+    console.log("fechaVuelo: ", vueloData.fechaVuelo);
+    console.log("horaVuelo: ", vueloData.horaVuelo);
+    console.log("origen: ", vueloData.origen);
+    console.log("destino: ", vueloData.destino);
+    console.log("tiempoDeVuelo: ", vueloData.tiempoDeVuelo);
+    console.log("idTipoVuelo: ", vueloData.idTipoVuelo);
+    console.log("fechaLlegada: ", vueloData.fechaLlegada);
+    console.log("horaLlegada: ", vueloData.horaLlegada);
+    console.log("costoPorPersona: ", vueloData.costoPorPersona);
+    console.log("creadoPor: ", vueloData.creadoPor);
+    console.log("estado: ", vueloData.estado);
+
+    this.vuelosService.crearVuelo(vueloData).subscribe({
+      next: () => {
+        this.mensajeExito = 'Vuelo creado exitosamente.';
+        this.mensajeError = '';
+        this.vueloForm.reset();
+      },
+      error: (err) => {
+        console.error('Error al crear el vuelo:', err);
+        this.mensajeError = 'Error al crear el vuelo';
+        this.mensajeExito = '';
+      }
+    });
+  }
+
 
   validarFechaYHoraVuelo(): void {
     const fechaVuelo = this.vueloForm.get('fechaVuelo')?.value;
@@ -285,25 +361,7 @@ export class CrearVueloComponent implements OnInit{
     }
   }
 
-  crearVuelo(): void {
-    if (this.vueloForm.valid) {
-      const nuevoVuelo = this.vueloForm.value;
-      this.vuelosService.agregarVuelo(nuevoVuelo).subscribe(
-        () => {
-          this.mensajeExito = 'Vuelo creado exitosamente';
-          this.mensajeError = '';
-          this.vueloForm.reset();
-        },
-        (error) => {
-          console.error('Error al agregar el vuelo', error);
-          this.mensajeError = 'Hubo un problema al crear el vuelo';
-        }
-      );
-    } else {
-      this.mensajeError = 'Por favor complete todos los campos correctamente';
-      this.mensajeExito = '';
-    }
-  }
+
 }
 
 
