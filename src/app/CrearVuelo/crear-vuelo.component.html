@@ -64,7 +64,10 @@
           type="date"
           formControlName="fechaVuelo"
           [min]="todayDate"
-          class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700" required>
+          class="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+          required
+          (change)="validarFecha()"
+        >
         <div *ngIf="vueloForm.get('fechaVuelo')?.invalid && vueloForm.get('fechaVuelo')?.touched">
           <small class="text-red-500" *ngIf="vueloForm.get('fechaVuelo')?.errors?.['required']">El campo fecha de vuelo es requerido.</small>
         </div>

@@ -150,6 +150,13 @@ export class CrearVueloComponent implements OnInit{
     return hora; // Si ya tiene el formato HH:mm:ss, lo retorna tal cual
   }
 
+  validarFecha() {
+    if (this.vueloForm.controls['fechaVuelo']?.value < this.todayDate) {
+      console.log("aaaa");
+      this.vueloForm.controls['fechaVuelo'].setValue(this.todayDate);
+    }
+  }
+
   crearVuelo(): void {
     if (this.vueloForm.invalid) {
       this.mensajeError = 'Por favor completa todos los campos requeridos.';
@@ -162,7 +169,6 @@ export class CrearVueloComponent implements OnInit{
     // Formatear las horas en HH:mm:ss antes de enviarlas
     const horaVuelo = this.formatearHora(this.vueloForm.get('horaVuelo')?.value);
     const horaLlegada = this.formatearHora(this.fechaLlegada.split("T")[1]); // Asumimos que tienes la hora como "T" separador
-
 
     const vueloData = {
       //id: this.proximoIdVuelo,
@@ -179,6 +185,8 @@ export class CrearVueloComponent implements OnInit{
       //fechaCreacion: new Date().toISOString(),
       estado: 0
     };
+
+
 
     console.log("fechaVuelo: ", vueloData.fechaVuelo);
     console.log("horaVuelo: ", vueloData.horaVuelo);
