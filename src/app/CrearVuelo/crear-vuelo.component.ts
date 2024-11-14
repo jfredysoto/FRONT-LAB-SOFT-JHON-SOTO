@@ -368,8 +368,6 @@ export class CrearVueloComponent implements OnInit{
       });
     }
   }
-
-
 }
 
 

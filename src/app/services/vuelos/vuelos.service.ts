@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Vuelo } from '../../Modelos/vuelo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,12 @@ export class VuelosService {
     return this.http.post(`${this.apiUrl}/crear-vuelo`, vueloData);
   }
 
+  editarVuelo(id: number, datosVuelo: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/vuelos/${id}`, datosVuelo);
+  }
+  
+  
+
   obtenerProximoId(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/proximo-id`);
   }
@@ -24,13 +31,20 @@ export class VuelosService {
     return this.http.get<string[]>(`${this.apiUrl}/ciudades-disponibles`, { params });
   }
 
+  
+
   // Método para agregar un vuelo
   agregarVuelo(vuelo: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/crear-vuelo`, vuelo);
   }
 
   // Método para obtener la lista de vuelos
-  obtenerVuelos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  obtenerVuelos(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/obtener-vuelos`);
   }
+
+  obtenerVueloPorId(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/vuelos/${id}`);
+  }  
 }
+

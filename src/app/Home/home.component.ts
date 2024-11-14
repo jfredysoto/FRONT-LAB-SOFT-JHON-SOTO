@@ -27,9 +27,10 @@ export class HomeComponent implements OnInit {
   }
 
   cargarVuelos(): void {
-    this.vuelosService.obtenerVuelos().subscribe(
+    this.vuelosService.obtenerProximoId().subscribe(
       (vuelos) => {
-        this.vuelos = vuelos;
+        // home.component.ts
+      this.vuelos = Array.isArray(vuelos) ? vuelos : [vuelos]; // Asegúrate de que siempre sea un array.
       },
       (error) => {
         console.error('Error al cargar los vuelos', error);

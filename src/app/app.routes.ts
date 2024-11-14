@@ -45,8 +45,7 @@ export const routes: Routes = [
     data: { rolEsperado: 'Admin' } // Solo accesible para usuarios con rol Admin
   },
   {
-    path: 'editar-vuelo/:id',
-    component: EditarVueloComponent,
+    path: 'editar-vuelo', component: EditarVueloComponent,
     canActivate: [AutenticacionAdminGuard] // Solo accesible para administradores autenticados
   },
   {

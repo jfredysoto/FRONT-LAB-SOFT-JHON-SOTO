@@ -1,12 +1,10 @@
-
-  
-  // Estilos generales del contenedor del perfil
+// Estilos generales del contenedor del perfil
 .editar-perfil-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f4f4f9;
+    background-color: #6969da;
     padding: 20px;
   
     .form-wrapper {
@@ -75,7 +73,7 @@
   // Estilos para el botón de guardar cambios
   button[type='submit'] {
     padding: 12px;
-    background-color: #007bff;
+    background-color: #dae3ed;
     border: none;
     color: #ffffff;
     font-size: 16px;
@@ -85,7 +83,7 @@
     transition: background-color 0.3s ease;
   
     &:hover {
-      background-color: #0056b3;
+      background-color: #44c87b;
     }
   
     &:disabled {

@@ -1,12 +1,10 @@
 // Contenedor principal del formulario
 .form-container {
     max-width: 40rem;
-    margin: 2rem auto;
     background-color: #ffffff;
     border-radius: 0.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 2rem;
-    margin-top: 12rem; // Ajusta para evitar que el header lo tape
   }
   
   // Título del formulario
@@ -74,7 +72,7 @@
   }
   
   .mt-4 {
-    margin-top: 1rem;
+    margin-top: 200px;
   }
   
   .text-green-500 {

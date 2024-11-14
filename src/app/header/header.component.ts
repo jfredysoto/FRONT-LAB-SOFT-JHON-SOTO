@@ -20,6 +20,12 @@ export class HeaderComponent implements OnInit {
   accountDeletedMessage: string | null = null;
   isRoot: boolean = false; // Verifica si el usuario es SuperUsuario (Root)
   isAdmin: boolean = false; // Nueva propiedad para verificar si el usuario es administrador
+  showDeleteConfirmation: boolean = false;
+  deletePassword: string = '';
+  logoutSuccessMessage: boolean = false; // Declaración de la propiedad
+  welcomeMessage: boolean = false;
+  username: string = '';
+
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -38,6 +44,26 @@ export class HeaderComponent implements OnInit {
 
   getUserId(): string {
     return localStorage.getItem('userId') || '';
+  }
+
+  openDeleteConfirmation() {
+    this.showDeleteConfirmation = true;
+  }
+  
+  cancelDelete() {
+    this.showDeleteConfirmation = false;
+    this.deletePassword = ''; // Limpiar el campo de contraseña
+  }
+  
+  confirmDeleteAccount() {
+    // Lógica de confirmación de eliminación de cuenta
+    this.deleteAccount();
+  }
+  
+  acceptDeleteAccount() {
+    // Lógica para aceptar la eliminación con contraseña
+    console.log('Contraseña ingresada:', this.deletePassword);
+    this.cancelDelete();
   }
 
   deleteAccount(): void {
@@ -91,6 +117,14 @@ export class HeaderComponent implements OnInit {
             this.isRoot = this.authService.isRoot(); // Verifica si es SuperUsuario
             this.isAdmin = this.authService.isAdmin(); // Verifica si es administrador
           }
+          // Mostrar el mensaje de bienvenida
+        this.username = this.email.split('@')[0]; // Extrae el nombre de usuario del correo electrónico
+        this.welcomeMessage = true; // Activa el contenedor de bienvenida
+        // Ocultar el mensaje después de 3 segundos
+        setTimeout(() => {
+          this.welcomeMessage = false;
+          this.router.navigate(['/header']);
+        },6000);
 
           alert('Inicio de sesión exitoso');
           this.toggleLoginMenu();
@@ -124,7 +158,14 @@ export class HeaderComponent implements OnInit {
 
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userId');
-    this.router.navigate(['/home']);
+
+     // Bandera para mostrar el contenedor de confirmación de cierre de sesión
+  this.logoutSuccessMessage = true;
+     // Ocultar el contenedor después de 3 segundos y redirigir al home
+  setTimeout(() => {
+    this.logoutSuccessMessage = false;
+    this.router.navigate(['/home']); // Redirige a la página principal
+  }, 3000);
   }
 
   editarPerfil(): void {
