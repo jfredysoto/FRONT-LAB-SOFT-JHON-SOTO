@@ -16,8 +16,8 @@ export class VuelosService {
     return this.http.post(`${this.apiUrl}/crear-vuelo`, vueloData);
   }
 
-  editarVuelo(id: number, datosVuelo: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/vuelos/${id}`, datosVuelo);
+  editarVuelo(id: number, vuelo: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/editar-vuelo/${id}`, vuelo);
   }
   
   
@@ -45,6 +45,7 @@ export class VuelosService {
 
   obtenerVueloPorId(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/vuelos/${id}`);
-  }  
+  } 
+  
 }
 
