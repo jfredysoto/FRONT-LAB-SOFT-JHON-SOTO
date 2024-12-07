@@ -1,26 +1,39 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule} from '@angular/forms';
+import { FormsModule} from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cancelar-vuelo',
   templateUrl: './cancelar-vuelo.component.html',
-  styleUrls: ['./cancelar-vuelo.component.scss']
+  styleUrls: ['./cancelar-vuelo.component.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule, FormsModule, CommonModule],
 })
 export class CancelarVueloComponent {
-  @Output() onClose = new EventEmitter<void>();
-  @Output() onConfirm = new EventEmitter<void>();
+  codigoReserva: string = '';
+  fechaVuelo: string = '';
+  mensaje: { text: string; success: boolean } | null = null;
 
-  abrirModal() {
-    // Lógica para mostrar el modal, puedes añadir una clase CSS para hacerlo visible
-  }
+  codigoReservaInvalid: boolean = false;
+  fechaVueloInvalid: boolean = false;
 
-  cerrarModal() {
-    this.onClose.emit();
-    // Lógica para ocultar el modal
-  }
+  constructor(private fb: FormBuilder) {}
 
-  confirmarCancelacion() {
-    this.onConfirm.emit();
-    this.cerrarModal();
+  cancelarVuelo() {
+    if (!this.codigoReserva || !this.fechaVuelo) {
+      this.codigoReservaInvalid = !this.codigoReserva;
+      this.fechaVueloInvalid = !this.fechaVuelo;
+      return;
+    }
+
+    // Simular una respuesta del servidor
+    setTimeout(() => {
+      this.mensaje = {
+        text: 'El vuelo ha sido cancelado exitosamente.',
+        success: true,
+      };
+    }, 1000);
   }
 }
-
