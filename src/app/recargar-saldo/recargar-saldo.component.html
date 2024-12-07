@@ -1,0 +1,57 @@
+<div class="recargar-saldo-container">
+<div class="mt-24 max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Recargar Saldo</h2>
+
+  <form class="space-y-6">
+
+    <!-- Selección de Moneda -->
+    <div class="text-sm font-medium text-gray-700">
+      <label for="moneda">Seleccione la moneda</label>
+      <select id="moneda" formControlName="moneda" class="form-control">
+        <option value="COP">COP - Peso Colombiano</option>
+        <option value="USD">USD - Dólar Estadounidense</option>
+      </select>
+    </div>
+    <!-- Campo de monto -->
+    <div class="flex flex-col">
+      <label for="monto" class="text-sm font-medium text-gray-700">Monto a Recargar</label>
+      <input 
+        type="number" 
+        id="monto" 
+        class="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+        placeholder="Ingrese el monto" 
+        required
+      >
+    </div>
+
+    <!-- Campo de método de pago -->
+    <div class="flex flex-col">
+      <label for="metodoPago" class="text-sm font-medium text-gray-700">Método de Pago</label>
+      <select 
+        id="metodoPago" 
+        class="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        required
+      >
+        <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+        <option value="transferencia">Transferencia Bancaria</option>
+      </select>
+    </div>
+
+    <!-- Botón de recarga -->
+    <div class="flex justify-center">
+      <button 
+        type="submit" 
+        class="w-full py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      >
+        Recargar Saldo
+      </button>
+    </div>
+  </form>
+
+  <!-- Mensajes de éxito o error -->
+  <div class="mt-4 text-center">
+    <p class="text-green-500">¡Saldo recargado exitosamente!</p>
+  </div>
+</div>
+
+  

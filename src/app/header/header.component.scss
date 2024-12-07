@@ -291,6 +291,17 @@ nav {
   margin-top: 10px;
 }
 
+#cart-button {
+  background-color: #ffffff7a;  /* Fondo blanco */ 
+  border-radius: 50%;
+  transition: 0.3s;
+
+  &:hover { 
+    border-color: #ffffff;  /* Borde blanco al hacer hover */
+  }
+}
+
+
 
 
 

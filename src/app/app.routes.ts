@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { EditarPerfilComponent } from './editarperfil/editar-perfil.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './Home/home.component';
@@ -11,6 +12,12 @@ import { CrearVueloComponent} from './CrearVuelo/crear-vuelo.component';
 import { AutenticacionAdminGuard } from './AuthGuard/auth.guard';
 import { EditarVueloComponent } from './EditarVuelo/editar-vuelo.component';
 import { CancelarVueloComponent } from './CancelarVuelo/cancelar-vuelo.component';
+import { AgregarTarjetaComponent } from './agregar-tarjeta/agregar-tarjeta.component';
+import { RecargarSaldoComponent } from './recargar-saldo/recargar-saldo.component';
+import { ReservasComponent } from './reservas/reservas.component';
+import { SeleccionarSillaComponent } from './seleccionar-silla/seleccionar-silla.component';
+import { CancelarCompraComponent } from './cancelar-compra/cancelar-compra.component';
+import { CheckInComponent } from './check-in/check-in.component';
 export const routes: Routes = [
   {
     path: 'header', // Ruta principal (raíz)
@@ -45,14 +52,49 @@ export const routes: Routes = [
     data: { rolEsperado: 'Admin' } // Solo accesible para usuarios con rol Admin
   },
   {
-    path: 'editar-vuelo:id', component: EditarVueloComponent,
-    canActivate: [AutenticacionAdminGuard] // Solo accesible para administradores autenticados
+    path: 'editar-vuelo/:id', component: EditarVueloComponent, canActivate: [AutenticacionAdminGuard] // Solo accesible para administradores autenticados
   },
   {
     path: 'cancelar-vuelo',
     component: CancelarVueloComponent,
     canActivate: [AutenticacionAdminGuard] // Asegúrate de que solo los administradores puedan acceder
   },
+  {
+    path: 'agregar-tarjeta',
+    component: AgregarTarjetaComponent,
+    canActivate: [AutenticacionGuard], // Solo usuarios logueados
+    data: { rolEsperado: 'Cliente' } // Solo accesible para usuarios con rol Cliente
+  },
+  {
+    path: 'recargar-saldo',
+    component: RecargarSaldoComponent,
+    canActivate: [AutenticacionGuard], // Solo usuarios logueados
+    data: { rolEsperado: 'Cliente' } // Solo accesible para usuarios con rol Cliente
+  },
+  {
+    path: 'reservas',
+    component: ReservasComponent,
+    canActivate: [AutenticacionGuard], // Solo usuarios logueados
+    data: { rolEsperado: 'Cliente' } // Solo accesible para usuarios con rol Cliente
+    },
+    {
+      path: 'seleccionar-asientos',
+      component: SeleccionarSillaComponent,
+      canActivate: [AutenticacionGuard], // Solo usuarios logueados
+      data: { rolEsperado: 'Cliente' } // Solo accesible para usuarios con
+    },
+    {
+      path: 'cancelar-compra',
+      component: CancelarCompraComponent,
+      canActivate: [AutenticacionAdminGuard], // Solo accesible para administradores autenticados
+      data : {rolEsperado: 'Cliente'}
+    },
+    {
+      path: 'check-in',
+      component: CheckInComponent,
+      canActivate: [AutenticacionGuard], // Solo usuarios logueados
+      data: { rolEsperado: 'Cliente' } // Solo accesible para usuarios con rol Cliente
+      },
   {
     path: 'cambiar-contrasena', // Ruta del componente
     component: CambiarContrasenaComponent, // Componente standalone

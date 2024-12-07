@@ -92,6 +92,11 @@ export class AuthService {
     return this.rolUsuario;
   }
 
+  getUserId(): string | null {
+    return localStorage.getItem('userId'); // Obtén el ID del usuario desde el localStorage
+  }
+  
+
   // Método para obtener todos los administradores
   getAdministradores(): Observable<any> {
     return this.http.get(`${this.apiURL}/usuarios/obtener-todos`);
@@ -138,6 +143,7 @@ export class AuthService {
   editarVuelo(vueloId: number, datosVuelo: any): Observable<any> {
     return this.http.put<any>(`${this.apiURL}/vuelos/${vueloId}`, datosVuelo);
   }
+
 }
 
 

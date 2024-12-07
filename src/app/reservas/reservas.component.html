@@ -1,0 +1,43 @@
+<div class="reservas-container container mx-auto p-6">
+    <h2 class="text-3xl font-semibold text-center mb-8">Mis Reservas</h2>
+  
+    <!-- Si no hay reservas activas -->
+    <div *ngIf="reservas.length === 0" class="text-center">
+      <p class="text-lg text-gray-500">No tienes reservas activas.</p>
+    </div>
+  
+    <!-- Si hay reservas activas -->
+    <div *ngIf="reservas.length > 0" class="space-y-6">
+      <!-- Advertencia si el cliente tiene más de 5 reservas -->
+      <p *ngIf="reservas.length > maxReservas" class="bg-yellow-100 text-yellow-700 p-4 rounded-lg">
+        Has superado el límite de 5 reservas activas. Algunas serán liberadas automáticamente después de 24 horas.
+      </p>
+  
+      <!-- Lista de reservas -->
+      <div class="space-y-4">
+        <div *ngFor="let reserva of reservas" class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-blue-600 mb-4">Vuelo: {{ reserva.vueloId }} - {{ reserva.origen }} a {{ reserva.destino }}</h3>
+          
+          <p class="text-gray-700 mb-2">
+            <strong>Fecha de Reserva:</strong> {{ reserva.fechaReserva | date: 'short' }}
+          </p>
+          <p class="text-gray-700 mb-4">
+            <strong>Estado:</strong> {{ reserva.estado }}
+          </p>
+          
+          <!-- Botón para liberar la reserva -->
+          <button 
+            (click)="liberarReserva(reserva.id)" 
+            class="bg-red-600 text-white p-2 rounded-lg hover:bg-red-700 focus:outline-none"
+            *ngIf="reserva.estado !== 'Liberada'">
+            Liberar Reserva
+          </button>
+          
+          <!-- Si la reserva está liberada, mostrar mensaje -->
+          <p *ngIf="reserva.estado === 'Liberada'" class="text-green-600 mt-4">Esta reserva ha sido liberada.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

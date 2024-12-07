@@ -22,7 +22,8 @@ export class EditarVueloComponent implements OnInit {
   ciudadesDestino: string[] = [];
   mensajeExito: string = '';
   mensajeError: string = '';
-  vuelos: any[] = []; // Puedes especificar un tipo más preciso si tienes un modelo definido
+  vuelos: Vuelo[] = [];
+
 
   constructor(private fb: FormBuilder, private vuelosService: VuelosService, private route: ActivatedRoute, private router: Router) {
     this.vueloForm = this.fb.group({
@@ -35,19 +36,23 @@ export class EditarVueloComponent implements OnInit {
       horaLlegada: ['', Validators.required],
       costoPorPersona: ['', [Validators.required, Validators.min(0)]],
       estado: ['', Validators.required]
-    });    
+    });      
   }
 
   ngOnInit(): void {
-      this.route.paramMap.subscribe(params => {
-        const id = params.get('id');
-        if (id) {
-          this.vueloId = +id;
-          this.cargarVuelo(this.vueloId);
-        }
-      });
-    this.cargarCiudades();
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.vueloId = +id; // Convierte el ID a número
+        this.cargarVuelo();  // Llama a la función para cargar los datos del vuelo
+      } else {
+        console.error('El ID del vuelo no está presente en la URL.');
+      }
+    });
   }
+  
+  
+  
 
   onOrigenChange(): void {
     const origenSeleccionado = this.vueloForm.get('origen')?.value;
@@ -72,46 +77,58 @@ export class EditarVueloComponent implements OnInit {
     );
   }
 
-
-  cargarVuelo(id: number): void {
-    this.route.paramMap.subscribe(params => {
-      const id = Number(params.get('id'));
-      if (id) {
-        this.vuelosService.obtenerVueloPorId(id).subscribe(
-          vuelo => {
-            if (vuelo) {
-              this.vueloForm.patchValue(vuelo);
-            }
-          },
-          error => {
-            console.error('Error al cargar los datos del vuelo:', error);
-          }
-        );
+  cargarVuelo(): void {
+    if (!this.vueloId) {
+      console.error('El ID del vuelo no es válido.');
+      return;
+    }
+  
+    this.vuelosService.obtenerVueloPorId(this.vueloId).subscribe(
+      (vuelo) => {
+        if (vuelo) {
+          // Aquí asignas los valores del vuelo a tu formulario
+          this.vueloForm.patchValue({
+            origen: vuelo.origen,
+            destino: vuelo.destino,
+            fechaVuelo: vuelo.fechaVuelo.split('T')[0], // Solo la fecha
+            horaVuelo: vuelo.horaVuelo,
+            tiempoDeVuelo: vuelo.tiempoDeVuelo,
+            fechaLlegada: vuelo.fechaLlegada.split('T')[0],
+            horaLlegada: vuelo.horaLlegada,
+            costoPorPersona: vuelo.costoPorPersona,
+            estado: vuelo.estado
+          });
+        } else {
+          console.error('No se encontraron datos para el vuelo.');
+          this.mensajeError = 'No se encontró el vuelo con el ID proporcionado.';
+        }
+      },
+      (error) => {
+        console.error('Error al obtener el vuelo:', error);
+        this.mensajeError = 'Ocurrió un error al obtener el vuelo.';
       }
-    });    
+    );
   }
   
   
+
 
   editarVuelo(): void {
-    if (this.vueloId !== null && this.vueloForm.valid) {
-      this.vuelosService.editarVuelo(this.vueloId!, this.vueloForm.value).subscribe(
-        response => {
-          console.log('Vuelo actualizado exitosamente:', response);
-          alert('Vuelo actualizado correctamente');
-          this.router.navigate(['/vuelos']);
-        },
-        error => {
-          console.error('Error al actualizar el vuelo:', error);
-          alert('Ocurrió un error al actualizar el vuelo.');
-        }
-      );      
-    } else {
-      console.log('ID del vuelo:', this.vueloId);
-      console.log('Estado del formulario:', this.vueloForm.valid);
-    console.log('Valores del formulario:', this.vueloForm.value);
-      alert('El ID del vuelo no es válido o faltan campos por completar.');
+    if (!this.vueloId || !this.vueloForm.valid) {
+      console.log('Formulario no válido', this.vueloForm);
+      this.mensajeError = 'El formulario no es válido o falta el ID del vuelo.';
+      return;
     }
-  }
   
+    this.vuelosService.editarVuelo(this.vueloId, this.vueloForm.value).subscribe(
+      (response) => {
+        this.mensajeExito = 'Vuelo actualizado exitosamente.';
+        this.router.navigate(['/vuelos']);
+      },
+      (error) => {
+        console.error('Error al actualizar el vuelo:', error);
+        this.mensajeError = error.error?.mensaje || 'Ocurrió un error al actualizar el vuelo.';
+      }
+    );
+  }  
 }

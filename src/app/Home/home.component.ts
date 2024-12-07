@@ -3,6 +3,7 @@ import { RegisterComponent } from '../Register/register.component';
 import { CommonModule } from '@angular/common';
 import { CambiarContrasenaComponent } from '../CambiarContraseña/cambiar-contraseña.component';
 import { VuelosService } from '../services/vuelos/vuelos.service';
+import { Vuelo } from '../Modelos/vuelo.model';
 
 @Component({
   selector: 'app-home',
@@ -27,20 +28,37 @@ export class HomeComponent implements OnInit {
   }
 
   cargarVuelos(): void {
-    this.vuelosService.obtenerProximoId().subscribe(
-      (vuelos) => {
-        // home.component.ts
-      this.vuelos = Array.isArray(vuelos) ? vuelos : [vuelos]; // Asegúrate de que siempre sea un array.
+    this.vuelosService.obtenerVuelos().subscribe(
+      (vuelos: any[]) => {
+        console.log('Vuelos recibidos:', vuelos); // Asegúrate de que los datos se reciban correctamente
+        this.vuelos = vuelos;  // Asigna los vuelos a la variable de la vista
       },
       (error) => {
-        console.error('Error al cargar los vuelos', error);
+        console.error('Error al cargar los vuelos:', error);
       }
     );
   }
+  
+  
+  
 
-  searchFlights() {
-    console.log(`Searching flights from ${this.origin} to ${this.destination}...`);
+  buscarVuelos(): void {
+    const filtros = {
+      origen: this.origin,
+      destino: this.destination,
+      fechaVuelo: this.departureDate,
+    };
+
+    this.vuelosService.buscarVuelos(filtros).subscribe(
+      (vuelos) => {
+        this.vuelos = vuelos; // Actualizar lista de vuelos con los resultados
+      },
+      (error) => {
+        console.error('Error al buscar vuelos:', error);
+      }
+    );
   }
+  
 
   openHotels() {
     console.log('Opening hotel search...');

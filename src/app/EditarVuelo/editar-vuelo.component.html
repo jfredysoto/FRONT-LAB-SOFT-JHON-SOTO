@@ -7,63 +7,68 @@
       <!-- Campo Origen -->
       <div>
         <label for="origen" class="block text-sm font-medium text-gray-700">Origen</label>
-        <input id="origen" formControlName="origen" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <input id="origen" name="origen" formControlName="origen" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         <div *ngIf="vueloForm.get('origen')?.invalid && vueloForm.get('origen')?.touched" class="text-red-500">
           El campo Origen es obligatorio.
         </div>
-        
       </div>
 
       <!-- Campo Destino -->
       <div>
         <label for="destino" class="block text-sm font-medium text-gray-700">Destino</label>
-        <input id="destino" formControlName="destino" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <input id="destino" name="destino" formControlName="destino" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <div *ngIf="vueloForm.get('destino')?.invalid && vueloForm.get('destino')?.touched" class="text-red-500">
+          El campo Destino es obligatorio.
+        </div>
       </div>
 
       <!-- Campo Fecha de Vuelo -->
       <div>
         <label for="fecha_vuelo" class="block text-sm font-medium text-gray-700">Fecha de Vuelo</label>
-        <input id="fecha_vuelo" formControlName="fechaVuelo" type="date" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <input id="fecha_vuelo" name="fecha_vuelo" formControlName="fechaVuelo" type="date" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
       </div>
 
       <!-- Campo Hora de Vuelo -->
       <div>
         <label for="horaVuelo" class="block text-sm font-medium text-gray-700">Hora de Vuelo</label>
-        <input id="horaVuelo" type="time" formControlName="horaVuelo" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <input id="horaVuelo" name="horaVuelo" formControlName="horaVuelo" type="time" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
       </div>
 
       <!-- Campo Tiempo de Vuelo -->
       <div>
         <label for="tiempoDeVuelo" class="block text-sm font-medium text-gray-700">Tiempo de Vuelo</label>
-        <input id="tiempoDeVuelo" type="time" formControlName="tiempoDeVuelo" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <input id="tiempoDeVuelo" name="tiempoDeVuelo" formControlName="tiempoDeVuelo" type="time" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
       </div>
 
       <!-- Campo Fecha de Llegada -->
       <div>
         <label for="fechaLlegada" class="block text-sm font-medium text-gray-700">Fecha de Llegada</label>
-        <input id="fechaLlegada" type="date" formControlName="fechaLlegada" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <input id="fechaLlegada" name="fechaLlegada" formControlName="fechaLlegada" type="date" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
       </div>
 
       <!-- Campo Hora de Llegada -->
       <div>
         <label for="horaLlegada" class="block text-sm font-medium text-gray-700">Hora de Llegada</label>
-        <input id="horaLlegada" type="time" formControlName="horaLlegada" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <input id="horaLlegada" name="horaLlegada" formControlName="horaLlegada" type="time" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
       </div>
 
       <!-- Campo Costo por Persona -->
       <div>
         <label for="costoPorPersona" class="block text-sm font-medium text-gray-700">Costo por Persona</label>
-        <input id="costoPorPersona" type="number" formControlName="costoPorPersona" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <input id="costoPorPersona" name="costoPorPersona" formControlName="costoPorPersona" type="number" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
       </div>
 
       <!-- Campo Estado -->
       <div>
         <label for="estado" class="block text-sm font-medium text-gray-700">Estado</label>
-        <select id="estado" formControlName="estado" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          <option value="0">Programado</option>
-          <option value="1">Realizado</option>
-          <option value="2">Cancelado</option>
+        <select id="estado" name="estado" formControlName="estado" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option [value]="0">Programado</option>
+          <option [value]="1">Cancelado</option>
+          <option [value]="2">Completado</option>
         </select>
+        <div *ngIf="vueloForm.get('estado')?.invalid && vueloForm.get('estado')?.touched" class="text-red-500">
+          El campo Estado es obligatorio.
+        </div>
       </div>
     </div>
 
@@ -75,10 +80,12 @@
   </form>
 
   <!-- Mensajes de éxito o error -->
-  <div *ngIf="mensajeExito" class="mt-4 text-green-500 text-center">{{ mensajeExito }}</div>
-  <div *ngIf="mensajeError" class="mt-4 text-red-500 text-center">{{ mensajeError }}</div>
+  <div *ngIf="mensajeExito" class="mt-4 text-green-500 text-center">
+    {{ mensajeExito }}
+  </div>
+  <div *ngIf="mensajeError" class="mt-4 text-red-500 text-center">
+    {{ mensajeError }}
+  </div>
 </div>
-
-
 
 

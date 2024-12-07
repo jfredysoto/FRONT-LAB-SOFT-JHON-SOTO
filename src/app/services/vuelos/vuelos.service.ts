@@ -16,12 +16,12 @@ export class VuelosService {
     return this.http.post(`${this.apiUrl}/crear-vuelo`, vueloData);
   }
 
-  editarVuelo(id: number, vuelo: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/editar-vuelo/${id}`, vuelo);
+  editarVuelo(id: number, vueloData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/vuelos/editar-vuelo/${id}`, vueloData);
   }
   
   
-
+  
   obtenerProximoId(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/proximo-id`);
   }
@@ -38,14 +38,34 @@ export class VuelosService {
     return this.http.post<any>(`${this.apiUrl}/crear-vuelo`, vuelo);
   }
 
-  // Método para obtener la lista de vuelos
+  // Obtener la lista de vuelos
   obtenerVuelos(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/obtener-vuelos`);
+    return this.http.get<any>(`${this.apiUrl}/obtener-vuelos`); // Verifica que la ruta esté correctamente configurada
   }
 
   obtenerVueloPorId(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/vuelos/${id}`);
-  } 
+  }
+  
+  buscarVuelos(filtros: any): Observable<any[]> {
+    let params = new HttpParams();
+  
+    if (filtros.origen) {
+      params = params.set('origen', filtros.origen);
+    }
+    if (filtros.destino) {
+      params = params.set('destino', filtros.destino);
+    }
+    if (filtros.fechaVuelo) {
+      params = params.set('fechaVuelo', filtros.fechaVuelo);
+    }
+  
+    return this.http.get<any[]>(`${this.apiUrl}/obtener-vuelos`, { params });
+  }
+  // Método para cancelar la compra y procesar el reembolso
+  cancelarCompra(vueloId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/cancelar-compra`, { vueloId });
+  }
   
 }
 

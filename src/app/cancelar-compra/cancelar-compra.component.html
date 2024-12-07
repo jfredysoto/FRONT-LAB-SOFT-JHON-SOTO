@@ -1,0 +1,28 @@
+<div class="container mx-auto p-6 mt-20">
+    <h2 class="text-xl font-semibold mb-4">Detalles de la Compra</h2>
+  
+    <div *ngIf="vuelo">
+      <p><strong>Vuelo:</strong> {{ vuelo.origen }} - {{ vuelo.destino }}</p>
+      <p><strong>Fecha de Vuelo:</strong> {{ vuelo.fechaVuelo | date: 'shortDate' }} a las {{ vuelo.horaVuelo }}</p>
+      <p><strong>Precio por Persona:</strong> {{ vuelo.costoPorPersona | currency }}</p>
+  
+      <div *ngIf="puedeCancelar">
+        <p class="text-green-500 mt-4">Puedes cancelar tu compra y recibir un reembolso.</p>
+      </div>
+  
+      <div *ngIf="!puedeCancelar">
+        <p class="text-red-500 mt-4">Lo sentimos, no puedes cancelar la compra porque el vuelo es dentro de menos de una hora.</p>
+      </div>
+  
+      <button *ngIf="puedeCancelar"
+              class="bg-red-500 text-white px-4 py-2 rounded mt-6"
+              (click)="cancelarCompra()">
+        Cancelar Compra
+      </button>
+    </div>
+  
+    <div *ngIf="!vuelo" class="mt-4">
+      <p>Cargando detalles de la compra...</p>
+    </div>
+  </div>
+  

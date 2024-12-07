@@ -1,0 +1,46 @@
+<div class="mt-[170px] p-6 max-w-xl mx-auto bg-white rounded-lg shadow-lg">
+    <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800">Realiza tu Check-in</h2>
+  
+    <!-- Formulario de Check-in -->
+    <form (ngSubmit)="onSubmit()" class="space-y-6">
+      <div class="flex flex-col mb-4">
+        <label for="codigoReserva" class="text-sm font-medium text-gray-700">Código de Reserva</label>
+        <input
+          id="codigoReserva"
+          type="text"
+          class="mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          [(ngModel)]="codigoReserva"
+          required
+        />
+      </div>
+  
+      <div class="flex flex-col mb-4">
+        <label for="documento" class="text-sm font-medium text-gray-700">Documento de Identidad</label>
+        <input
+          id="documento"
+          type="text"
+          class="mt-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          [(ngModel)]="documento"
+          required
+        />
+      </div>
+  
+      <!-- Botones para confirmar o cancelar -->
+      <div class="flex justify-between">
+        <button
+          type="submit"
+          class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+        >
+          Confirmar Check-in
+        </button>
+        <button
+          type="button"
+          class="px-6 py-3 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:ring-2 focus:ring-gray-500"
+          (click)="cancelCheckin()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+  

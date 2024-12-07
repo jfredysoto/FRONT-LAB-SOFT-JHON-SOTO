@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   accountDeletedMessage: string | null = null;
   isRoot: boolean = false; // Verifica si el usuario es SuperUsuario (Root)
   isAdmin: boolean = false; // Nueva propiedad para verificar si el usuario es administrador
+  isClient: boolean = false; // Nueva propiedad para verificar si el usuario es cliente
   showDeleteConfirmation: boolean = false;
   deletePassword: string = '';
   logoutSuccessMessage: boolean = false; // Declaración de la propiedad
@@ -39,6 +40,7 @@ export class HeaderComponent implements OnInit {
       this.isLoggedIn = true;
       this.isRoot = this.authService.isRoot(); // Verifica si es SuperUsuario
       this.isAdmin = this.authService.isAdmin(); // Verifica si es administrador
+      this.isClient = this.authService.isClient(); // Verifica si es cliente
     }
   }
 
@@ -116,6 +118,7 @@ export class HeaderComponent implements OnInit {
             this.authService.setUserType(response.userType);
             this.isRoot = this.authService.isRoot(); // Verifica si es SuperUsuario
             this.isAdmin = this.authService.isAdmin(); // Verifica si es administrador
+            this.isClient = this.authService.isClient(); // Verifica si es cliente
           }
           // Mostrar el mensaje de bienvenida
         this.username = this.email.split('@')[0]; // Extrae el nombre de usuario del correo electrónico
@@ -139,6 +142,10 @@ export class HeaderComponent implements OnInit {
       }
     );
   }
+   // Función para redirigir al componente de cancelar compra
+  goToCarrito(): void {
+    this.router.navigate(['/cancelar-compra']); // Asegúrate de que esta ruta sea correcta
+  }
 
   toggleLoginMenu(): void {
     this.showLoginMenu = !this.showLoginMenu;
@@ -155,6 +162,7 @@ export class HeaderComponent implements OnInit {
     this.userId = '';
     this.isRoot = false;
     this.isAdmin = false;
+    this.isClient = false;
 
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userId');

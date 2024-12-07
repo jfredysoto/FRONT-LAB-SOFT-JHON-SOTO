@@ -46,7 +46,7 @@
         </div>
   
         <div class="form-group">
-          <button class="search-btn">Buscar</button>
+          <button class="search-btn"  (click)="buscarVuelos()">Buscar</button>
         </div>
       </div>
     </div>
@@ -69,10 +69,10 @@
         <p>Destinos internacionales para que conozcas</p>
         <p>Por trayecto desde</p>
         <h3>USD 125</h3>
-        <button>Compra ya</button>
+        <a href="reservas" class="promo-link">Ver destinos →</a>
       </div>
       <div class="promo-logo">
-        <img src="src/assets/img/logo.png" alt="Logo">
+        <img src="/assets/img/logo.png" alt="Logo">
       </div>
     </div>
   </section>
@@ -102,51 +102,111 @@
         </div>
       </div>
     </div>
-    <a href="#" class="more-offers-link">Descubrir más ofertas →</a>
+    <a href="reservas" class="more-offers-link">Descubrir más ofertas →</a>
   </div>
 
   <!-- home.component.html -->
-
-<div class="flights-list-section">
-  <h2>Vuelos Disponibles</h2>
-  <div *ngIf="vuelos.length > 0; else noFlights">
-    <div *ngFor="let vuelo of vuelos" class="flight-card">
-      <h3>Vuelo: {{ vuelo.nombre }}</h3>
-      <p>Origen: {{ vuelo.origen }}</p>
-      <p>Destino: {{ vuelo.destino }}</p>
-      <p>Fecha: {{ vuelo.fechaVuelo | date: 'shortDate' }}</p>
-      <p>Hora: {{ vuelo.horaVuelo | date: 'shortTime' }}</p>
-      <p>Costo: {{ vuelo.costoVuelo | currency }}</p>
+  <div class="flights-list-section">
+    <h2>Vuelos Disponibles</h2>
+    <div *ngIf="vuelos.length > 0; else noFlights">
+      <div *ngFor="let vuelo of vuelos" class="flight-card">
+        <h3>Vuelo: {{ vuelo.id }}</h3>
+        <p>Origen: {{ vuelo.origen }}</p>
+        <p>Destino: {{ vuelo.destino }}</p>
+        <p>Fecha: {{ vuelo.fechaVuelo }}</p>
+        <p>Hora: {{ vuelo.horaVuelo }}</p>
+        <p>Costo: {{ vuelo.costoPorPersona | currency }}</p>
+      </div>
     </div>
+    <ng-template #noFlights>
+      <p>No hay vuelos disponibles actualmente.</p>
+    </ng-template>
   </div>
-  <ng-template #noFlights>
-    <p>No hay vuelos disponibles actualmente.</p>
-  </ng-template>
-</div>
-
-
+  
+  
 
   
   <div class="prepare-travel-section">
     <h2>Prepárate para viajar</h2>
     <div class="preparation-options">
       <div class="option">
+        <div class="check-in-button">
+          <a href="/check-in" class="btn btn-primary">Realizar Check-in</a>
+        </div>
         <img src="assets/img/check.png" alt="Check-in online">
+        <!-- Agregar botón para Check-in -->
         <p>Check-in online</p>
         <p>Obtén tu pase de abordar y ahorra tiempo en el aeropuerto.</p>
       </div>
       <div class="option">
-        <img src="ruta/a/icono/centro-de-ayuda.svg" alt="Centro de ayuda">
+        <img src="/assets/img/apoyo.png" alt="Centro de ayuda">
         <p>Centro de ayuda</p>
         <p>Busca y encuentra información útil para resolver tus preguntas.</p>
       </div>
       <div class="option">
-        <img src="ruta/a/icono/requisitos.svg" alt="Requisitos para viajar">
+        <img src="/assets/img/requisitos.png" alt="Requisitos para viajar">
         <p>Requisitos para viajar</p>
         <p>Infórmate acerca de visas, vacunas y demás documentos.</p>
       </div>
+
     </div>
   </div>
+  <!-- Sección de Noticias o Promociones -->
+<div class="promotions-section mt-8">
+  <h2 class="text-2xl font-bold text-center mb-4">Promociones Especiales</h2>
+  <div class="promotions-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div class="promo-card bg-white shadow-lg rounded-lg p-6">
+      <div class="relative w-full h-40">
+      <img src="/assets/img/promo1.jpg" alt="Promoción 1" class="w-full h-40 object-cover rounded-t-lg">
+      </div>
+      <div class="promo-content mt-4">
+        <h3 class="text-xl font-semibold">Vuelo a Medellín</h3>
+        <p>Promo especial: Compra ahora y ahorra hasta un 20%</p>
+        <p class="text-blue-600 font-bold">Desde COP 150.000</p>
+      </div>
+    </div>
+
+    <div class="promo-card bg-white shadow-lg rounded-lg p-6">
+      <div class="relative w-full h-40">
+      <img src="/assets/img/promo2.jpg" alt="Promoción 2" class="w-full h-40 object-cover rounded-t-lg">
+    </div>
+      <div class="promo-content mt-4">
+        <h3 class="text-xl font-semibold">Viaje a Cancún</h3>
+        <p>¡Escápate con un 30% de descuento!</p>
+        <p class="text-blue-600 font-bold">Desde USD 200</p>
+      </div>
+    </div>
+
+    <div class="promo-card bg-white shadow-lg rounded-lg p-6">
+      <div class="relative w-full h-40">
+      <img src="/assets/img/promo3.jpg" alt="Promoción 3" class="w-full h-40 object-cover rounded-t-lg">
+      </div>
+      <div class="promo-content mt-4">
+        <h3 class="text-xl font-semibold">Destinos Nacionales</h3>
+        <p>Viaja por Colombia con precios especiales</p>
+        <p class="text-blue-600 font-bold">Desde COP 80.000</p>
+      </div>
+    </div>
+  </div>
+  <!-- footer-->
+<footer class="max-w-screen-xl mx-auto bg-gray-900 text-white py-20 mt-10">
+  <div class="container mx-auto text-center">
+    <p class="text-sm">© 2024 AirFastColombia - Todos los derechos reservados</p>
+    <div class="mt-4">
+      <a href="/home" class="mx-4 text-blue-400 hover:text-blue-600">Acerca de nosotros</a>
+      <a href="/home" class="mx-4 text-blue-400 hover:text-blue-600">Contacto</a>
+      <a href="/politica-privacidad" class="mx-4 text-blue-400 hover:text-blue-600">Política de Privacidad</a>
+      <a href="/condiciones-servicio" class="mx-4 text-blue-400 hover:text-blue-600">Términos y Condiciones</a>
+    </div>
+    <div class="mt-4">
+      <p>Síguenos en:</p>
+      <a href="https://facebook.com" class="text-blue-400 hover:text-blue-600 mx-2">Facebook</a>
+      <a href="https://twitter.com" class="text-blue-400 hover:text-blue-600 mx-2">Twitter</a>
+      <a href="https://instagram.com" class="text-blue-400 hover:text-blue-600 mx-2">Instagram</a>
+    </div>
+  </div>
+</footer>
+</div>
 </div>
   
 

@@ -9,6 +9,12 @@
     <div *ngIf="isLoggedIn" class="user-info">
       <p class="text-gray-900 dark:text-white">{{ email }}</p>
     </div>
+      <!-- Botón de Carrito de Compras -->
+      <button *ngIf="isLoggedIn && isClient" id="cart-button" class="flex text-sm rounded-full" (click)="goToCarrito()">
+        <span class="sr-only">Carrito</span>
+        <img class="w-8 h-8" src="https://img.icons8.com/ios-filled/50/000000/shopping-cart.png" alt="carrito" />
+      </button>
+
       <button id="user-menu-button" aria-expanded="false" (click)="toggleLoginMenu()" class="flex text-sm rounded-full">
         <span class="sr-only">Open user menu</span>
         <img class="w-8 h-8 rounded-full" src="https://w7.pngwing.com/pngs/184/113/png-transparent-user-profile-computer-icons-profile-heroes-black-silhouette-thumbnail.png" alt="user photo">
@@ -136,7 +142,7 @@
           <a href="/crear-vuelo" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Crear vuelo</a>
         </li>
         <li *ngIf="isLoggedIn && isAdmin">
-          <a href="/editar-vuelo:id" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Editar vuelo</a>
+          <a href="/editar-vuelo/:id" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Editar vuelo</a>
         </li>
         <li *ngIf="isLoggedIn && isAdmin">
           <a href="/cancelar-vuelo" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Cancelar vuelo</a>
@@ -144,11 +150,17 @@
         <li *ngIf="isLoggedIn && isRoot">
           <a href="/super-usuario" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Crear Admin</a>
         </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Reservas</a>
+        <li *ngIf="isLoggedIn && isClient">
+          <a href="/agregar-tarjeta" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Agregar Tarjeta</a>
         </li>
-        <li>
-          <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">contacto</a>
+        <li *ngIf="isLoggedIn && isClient">
+          <a href="/recargar-saldo" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Recargar Saldo</a>
+        </li>
+        <li *ngIf="isLoggedIn && isClient">
+          <a href="reservas" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Reservas</a>
+        </li>
+        <li *ngIf="isLoggedIn && isClient">
+          <a href="seleccionar-asientos" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Seleccionar Silla</a>
         </li>
       </ul>
     </div>

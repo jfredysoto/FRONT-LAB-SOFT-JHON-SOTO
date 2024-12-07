@@ -1,0 +1,36 @@
+<div class="container mx-auto mt-24 p-6">
+    <h2 class="text-xl font-semibold mb-4">Selección de Sillas</h2>
+  
+    <div class="mb-6">
+      <p class="text-lg">Tipo de Vuelo: {{ vueloTipo === 'nacional' ? 'Nacional' : 'Internacional' }}</p>
+      <p class="text-lg">Silla seleccionada: {{ sillaSeleccionada !== null ? sillaSeleccionada + 1 : 'Ninguna' }}</p>
+    </div>
+  
+    <!-- Mapa de sillas -->
+    <div class="grid grid-cols-10 gap-2">
+      <!-- Primera Clase -->
+      <div *ngFor="let silla of sillas.slice(0, primeraClase); let i = index" 
+           [ngClass]="{'bg-first-class': silla, 'bg-gray-300': !silla}" 
+           class="h-12 w-12 text-white rounded-lg flex items-center justify-center cursor-pointer"
+           (click)="cambiarSilla(i)">
+        {{ i + 1 }}
+      </div>
+  
+      <!-- Clase Económica -->
+      <div *ngFor="let silla of sillas.slice(primeraClase, capacidad); let i = index" 
+           [ngClass]="{'bg-economy-class': silla, 'bg-gray-300': !silla}" 
+           class="h-12 w-12 text-white rounded-lg flex items-center justify-center cursor-pointer"
+           (click)="cambiarSilla(i + primeraClase)">
+        {{ i + 1 + primeraClase }}
+      </div>
+    </div>
+  
+    <div class="mt-4">
+      <button *ngIf="!yaHizoCheckIn" 
+              class="bg-green-500 text-white px-4 py-2 rounded"
+              (click)="confirmarSilla()">Confirmar Silla</button>
+      <p *ngIf="yaHizoCheckIn" class="mt-2 text-red-500">¡Check-in realizado! No se pueden realizar más cambios.</p>
+    </div>
+  </div>
+  
+  
